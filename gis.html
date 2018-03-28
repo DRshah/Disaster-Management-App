@@ -41,16 +41,30 @@
   		var ref=database.ref("Data");
   		ref.on("value",gotData,errData);
   		function gotData(data){
-  			var scores=data.val();
-  			var keys=Object.keys(scores);
-  			for (var i = 0; i < keys.length; i++) {
+        console.log("hello");
+        //console.log(data.val());
+        
+  			var users=data.val();
+        for(x in users){
+          for(y in users[x]){
+            console.log(users[x][y].category);
+          }
+          
+        }
+        
+  			/*for (var i = 0; i < keys.length; i++) {
   				var k=keys[i];
   				var description=scores[k].description;
   				var category=scores[k].category;
   				var lat=scores[k].lat;
   				var lon=scores[k].lon;
   				console.log(description+","+category+","+lat+","+lon);
-  			}
+  				
+  			}*/
+        /*for (var i = 0; i < scores.length; i++) {
+          var path=scores[i];
+
+        }*/
   		}
   		function errData(err) {
   			// body...
@@ -89,6 +103,7 @@
               var point = new google.maps.LatLng(
                   parseFloat(markerElem.getAttribute('lat')),
                   parseFloat(markerElem.getAttribute('lng')));
+              
 
               var infowincontent = document.createElement('div');
               var strong = document.createElement('strong');
