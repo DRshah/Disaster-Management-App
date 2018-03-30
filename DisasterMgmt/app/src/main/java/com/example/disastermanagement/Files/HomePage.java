@@ -25,9 +25,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.disastermanagement.Fragment.CallFragment;
 import com.example.disastermanagement.Fragment.Entry;
 import com.example.disastermanagement.Fragment.FeedFragment;
 import com.example.disastermanagement.Fragment.ResourceFragment;
+import com.example.disastermanagement.Fragment.Volunteer;
 import com.example.disastermanagement.R;
 
 import java.util.ArrayList;
@@ -62,7 +64,7 @@ public class HomePage extends AppCompatActivity {
     private  FirebaseAuth.AuthStateListener mAuthstateListener;
     private ImageView user_img;
     SharedPreferences preferences;
-    String personID;
+    String personID,name,photo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,12 +90,19 @@ public class HomePage extends AppCompatActivity {
         user_img=listHeaderView.findViewById(R.id.avatar);
         nav_text_view=(TextView)listHeaderView.findViewById(R.id.name);
         preferences=getSharedPreferences("GoogleInfo",MODE_PRIVATE);
-        String name=preferences.getString("name","");
-        String photo=preferences.getString("photo","");
+        if(preferences.getString("LoginType","").equals("GOOGLE")) {
+            name = preferences.getString("name", "");
+            photo = preferences.getString("photo", "");
+            Uri pp=Uri.parse(photo);
+            Picasso.with(this).load(pp).into(user_img);
+        }
+        else{
+            name=preferences.getString("Username","");
+        }
         Toast.makeText(this,name,Toast.LENGTH_SHORT).show();
+
         nav_text_view.setText(name);
-        Uri pp=Uri.parse(photo);
-        Picasso.with(this).load(pp).into(user_img);
+
         //nav_user.setText(user.getEmail());
 
 
@@ -153,6 +162,7 @@ public class HomePage extends AppCompatActivity {
                 //getSupportActionBar().setTitle("hello world");
             }
         });
+        mExpandableListView.setActivated(true);
         mExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
@@ -163,7 +173,7 @@ public class HomePage extends AppCompatActivity {
                 //getSupportActionBar().setTitle(selectedItem);
 
                 //change activity when clicked on item
-                if(selectedItem.equals("Home"))
+                if(selectedItem.equalsIgnoreCase("Home"))
                 {
                     MapActivity fragment = new MapActivity();
                     android.support.v4.app.FragmentTransaction fragmentTransaction =
@@ -175,24 +185,27 @@ public class HomePage extends AppCompatActivity {
 //                    startActivity(i);
                 }
                 else
-                if(selectedItem.equals("Disaster Reporting"))
+                if(selectedItem.equalsIgnoreCase("Disaster Reporting"))
                 {
                     getSupportFragmentManager().beginTransaction().replace(R.id.container,new Entry()).commit();
                     Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
                 }
                 else
-                if(selectedItem.equals("Nearest"))
+                if(selectedItem.equalsIgnoreCase("Volunteer"))
                 {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container,new Volunteer()).commit();
                     Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
                 }
                 else
-                if(selectedItem.equals("Emergency Numbers"))
+                if(selectedItem.equalsIgnoreCase("Emergency numbers"))
                 {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container,new CallFragment()).commit();
                     Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
                 }
 
+
                 else
-                if(selectedItem.equals("Logout")){//logout
+                if(selectedItem.equalsIgnoreCase("Logout")){//logout
                     mAuth.signOut();
                     finish();
 //                    Intent i = new Intent(HomePage.this, ListActivity.class);

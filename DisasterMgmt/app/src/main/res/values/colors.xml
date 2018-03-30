@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+<<<<<<< HEAD
     <color name="red_50">#FFEBEE</color>
     <color name="red_100">#FFCDD2</color>
     <color name="red_200">#EF9A9A</color>
@@ -274,14 +275,18 @@
     <color name="grey_900">#212121</color>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
+=======
+    <color name="colorPrimary">#4A148C</color>
+    <color name="colorPrimaryDark">#9C27B0</color>
+>>>>>>> 451b2871d54e713d2c0c342339594914b61c4d3b
     <color name="colorAccent">#FF4081</color>
-
+    <color name="expListView">#FFECB3</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="grey">#999999</color>
 
 
     <color name="list_group_title">#808080</color>
-    <color name="list_item_title">#AAAAAA</color>
+    <color name="list_item_title">#292929</color>
     <color name="group_divider_color">#80CBC4</color>
 </resources>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_custom_layout"
+    android:layout_width="200dp"
+    android:layout_height="wrap_content"
+    android:padding="2dp"
+
+    android:orientation="vertical"
+    android:background="@color/white"
+    >
+    <ImageButton
+        android:id="@+id/ib_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_close_name"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:background="@null"
+        android:layout_gravity="right"
+        />
+    <TextView
+        android:id="@+id/tv"
+        android:textColor="@color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="23sp"
+        android:text="This is a sample popup window."
+        android:layout_centerInParent="true"
+        android:padding="8dp"
+        />
+    <TextView
+        android:id="@+id/tvcontent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:text="This is a sample popup window."
+        android:layout_centerInParent="true"
+        android:textSize="15sp"
+        android:padding="10dp"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/call"
+            android:text="CALL"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/directions"
+            android:text="Directions"
+            />
+    </LinearLayout>
+</LinearLayout>

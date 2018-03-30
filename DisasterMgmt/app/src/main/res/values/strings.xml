@@ -21,7 +21,7 @@
         <item>Home</item>
         <item>Disaster Reporting</item>
         <item>Resource</item>
-        <item>Nearest</item>
+        <item>Volunteer</item>
         <item>Feed</item>
         <item>Emergency numbers</item>
         <item>Logout</item>
@@ -34,4 +34,5 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>
