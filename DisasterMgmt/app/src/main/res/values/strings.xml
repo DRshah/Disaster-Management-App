@@ -18,17 +18,21 @@
     </string-array>
 
     <string-array name="Vegetables">
-        <item>1.Home</item>
-        <item>2.Feed</item>
-        <item>3.Form</item>
-        <item>4.Nearest</item>
-        <item>5.Call</item>
-        <item>6.sms</item>
-        <item>7.Logout</item>
+        <item>Home</item>
+        <item>Disaster Reporting</item>
+        <item>Resource</item>
+        <item>Nearest</item>
+        <item>Feed</item>
+        <item>Call</item>
+        <item>SMS</item>
+        <item>Logout</item>
     </string-array>
 
 
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="title_activity_map">Map</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

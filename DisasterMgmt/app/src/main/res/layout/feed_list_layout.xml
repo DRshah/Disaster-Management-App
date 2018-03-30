@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:padding="8dp">
+    <TextView
+        android:id="@+id/tv_disaster_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="emergency Type"/>
+    <TextView
+        android:id="@+id/tv_disaster_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="location"
+        android:layout_below="@id/tv_disaster_type"/>
+    <TextView
+        android:id="@+id/tv_extra"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="whatever"
+        android:layout_alignParentRight="true"/>
+</RelativeLayout>

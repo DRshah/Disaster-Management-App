@@ -1,9 +1,7 @@
 package com.example.disastermanagement.Files;
 
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -11,14 +9,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.disastermanagement.Fragment.Entry;
+import com.example.disastermanagement.Fragment.FeedFragment;
+import com.example.disastermanagement.Fragment.ResourceFragment;
 import com.example.disastermanagement.R;
 
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class HomePage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
-        Button logout=(Button)findViewById(R.id.logout);
+        /*Button logout=(Button)findViewById(R.id.logout);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,7 +60,7 @@ public class HomePage extends AppCompatActivity {
                 finish();
                 startActivity(new Intent(getApplicationContext(),LoginActivity.class));
             }
-        });
+        });*/
         FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mActivityTitle = getTitle().toString();
@@ -85,6 +86,7 @@ public class HomePage extends AppCompatActivity {
 
         //getSupportActionBar().setTitle("Disaster Application");
     }
+
 
     private void selectFirstItemAsDefault() {
         if (mNavigationManager != null) {
@@ -122,7 +124,7 @@ public class HomePage extends AppCompatActivity {
                 //getSupportActionBar().setTitle(selectedItem);
 
                 //change activity when clicked on item
-                if(selectedItem.equals("1.Home"))
+                if(selectedItem.equals("Home"))
                 {
                     MapActivity fragment = new MapActivity();
                     android.support.v4.app.FragmentTransaction fragmentTransaction =
@@ -133,19 +135,26 @@ public class HomePage extends AppCompatActivity {
 //                    //i.putExtra("page",""+selectedItem);
 //                    startActivity(i);
                 }else
-                if(selectedItem.equals("2.Feed"))
+                if(selectedItem.equals("Disaster Reporting"))
                 {
                     getSupportFragmentManager().beginTransaction().replace(R.id.container,new Entry()).commit();
                     Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
                 }
                 else
-                if(selectedItem.equals("Form"))
+                if(selectedItem.equals("Resource"))
                 {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container,new ResourceFragment()).commit();
                     Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
                 }
                 else
                 if(selectedItem.equals("Nearest"))
                 {
+                    Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
+                }
+                else
+                if(selectedItem.equals("Feed"))
+                {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container,new FeedFragment()).commit();
                     Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
                 }
                 else
@@ -166,8 +175,9 @@ public class HomePage extends AppCompatActivity {
 //                    i.putExtra("catgroupid",""+getCatCroupID(selectedItem));
 //                    i.putExtra("page",""+selectedItem);
 //                    startActivity(i);
+                }else {
+                    Toast.makeText(HomePage.this, "Error in IF" + selectedItem, Toast.LENGTH_SHORT).show();
                 }
-                Toast.makeText(HomePage.this, ""+selectedItem, Toast.LENGTH_SHORT).show();
                 mDrawerLayout.closeDrawer(GravityCompat.START);
                 return false;
             }
@@ -211,6 +221,8 @@ public class HomePage extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         //getMenuInflater().inflate(R.menu.main_menu, menu);
+        MenuInflater mi=getMenuInflater();
+        mi.inflate(R.menu.logout, menu);
         return true;
     }
 
@@ -223,6 +235,9 @@ public class HomePage extends AppCompatActivity {
         // Activate the navigation drawer toggle
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
+        }
+        if (id==R.id.logout_item){
+            Toast.makeText(this,"logout",Toast.LENGTH_SHORT).show();
         }
         /*if (id == R.id.aboutus) {
             Intent i = new Intent(HomePage.this,WebActivity.class);
