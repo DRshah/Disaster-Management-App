@@ -180,7 +180,7 @@ public class HomePage extends AppCompatActivity {
                     Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
                 }
                 else
->>>>>>> 39336eca25a7ce191e4e3e3979a09337f40f4865
+
                 if(selectedItem.equals("Nearest"))
                 {
                     Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
