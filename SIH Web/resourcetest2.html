@@ -1,0 +1,126 @@
+<!DOCTYPE html >
+  <head>
+
+<script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/firebasejs/4.12.0/firebase-database.js">
+</script>
+
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyCJU-7FLRU5yncwO4CQCIn2bzbhDtFyuz8",
+    authDomain: "sih2018-11ae3.firebaseapp.com",
+    databaseURL: "https://sih2018-11ae3.firebaseio.com",
+    projectId: "sih2018-11ae3",
+    storageBucket: "sih2018-11ae3.appspot.com",
+    messagingSenderId: "351828754712"
+  };
+  firebase.initializeApp(config);
+</script>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <title>Disas</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <div>
+     <table name="disasterdisplay" id="table" border=1 cellpadding=5px></table>
+   </div>
+  	<script type="text/javascript">
+      var database=firebase.database();
+      var ref=database.ref("Resources");
+      ref.on("value",gotData,errData);
+      var names = new Array();
+      var loc = new Array();
+      var phn = new Array();
+      var amt = new Array();
+      var item = new Array();
+      var descr = new Array();
+      var countr = 0;
+        function gotData(data){
+        console.log("hello");
+        var users=data.val();
+              for(x in users){
+                for(y in users[x]){
+                  names.push(users[x][y].name);
+                  loc.push(users[x][y].lat+","+users[x][y].lon);
+                  phn.push(users[x][y].phone);
+                  amt.push(users[x][y].amount);
+                  item.push(users[x][y].item);
+                  descr.push(users[x][y].description);
+                  countr++;
+                }
+            }
+            disptable(names,loc,phn,amt,item,descr);
+        }
+            function errData(err) {
+        			// body...
+        			console.log(err);
+        		}
+        function disptable(names,loc,phn,amt,item,descr)
+        {
+        console.log(names);
+        console.log(loc);
+        var table = document.getElementById('table');
+        var tbody = document.createElement('tbody');
+            var rowhead = document.createElement('tr');
+            var cellhead = document.createElement('td');
+            cellhead.textContent = "Name";
+            rowhead.appendChild(cellhead);
+            var cell2head = document.createElement('td');
+            cell2head.textContent = "Location";
+            rowhead.appendChild(cell2head);
+            var cell3head = document.createElement('td');
+            cell3head.textContent = "Phone Number";
+            rowhead.appendChild(cell3head);
+            var cell4head = document.createElement('td');
+            cell4head.textContent = "Item";
+            rowhead.appendChild(cell4head);
+            var cell5head = document.createElement('td');
+            cell5head.textContent = "Amount";
+            rowhead.appendChild(cell5head);
+            var cell6head = document.createElement('td');
+            cell6head.textContent = "Description";
+            rowhead.appendChild(cell6head);
+            tbody.appendChild(rowhead);
+// loop array
+        for (i = 0; i < names.length; i++) {
+        var row = document.createElement('tr');
+            var cell = document.createElement('td');
+            cell.textContent = names[i];
+            row.appendChild(cell);
+            var cell2 = document.createElement('td');
+            cell2.textContent = loc[i];
+            row.appendChild(cell2);
+            var cell3 = document.createElement('td');
+            cell3.textContent = phn[i];
+            row.appendChild(cell3);
+            var cell4 = document.createElement('td');
+            cell4.textContent = item[i];
+            row.appendChild(cell4);
+            var cell5 = document.createElement('td');
+            cell5.textContent = amt[i];
+            row.appendChild(cell5);
+            var cell6 = document.createElement('td');
+            cell6.textContent = descr[i];
+            row.appendChild(cell6);
+    //append tr to tbody
+        tbody.appendChild(row);
+        }
+// append tbody to table
+        table.appendChild(tbody);
+// append table to container
+        }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html >
+  <head>
+
+<script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/firebasejs/4.12.0/firebase-database.js">
+</script>
+
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyCJU-7FLRU5yncwO4CQCIn2bzbhDtFyuz8",
+    authDomain: "sih2018-11ae3.firebaseapp.com",
+    databaseURL: "https://sih2018-11ae3.firebaseio.com",
+    projectId: "sih2018-11ae3",
+    storageBucket: "sih2018-11ae3.appspot.com",
+    messagingSenderId: "351828754712"
+  };
+  firebase.initializeApp(config);
+</script>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<meta http-equiv="refresh" content="130">
+	<script type="text/javascript"
+        src="http://maps.google.com/maps/api/js?sensor=false"></script>
+
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <title>Using MySQL and PHP with Google Maps</title>
+    <style>
+	<link href="/apis/fusiontables/docs/samples/style/default.css"
+        rel="stylesheet" type="text/css">
+    
+    
+      #legend {
+        background: #FFF;
+        padding: 10px;
+        margin: 5px;
+        font-size: 12px;
+        font-family: Arial, sans-serif;
+      }
+
+      .color {
+        border: 1px solid;
+        height: 12px;
+        width: 12px;
+        margin-right: 3px;
+        float: left;
+      }
+
+      .red {
+        background: #C00;
+      }
+
+      .yellow {
+        background: #FF3;
+      }
+
+      .green {
+        background: #6F0;
+      }
+
+      .blue {
+        background: #06C;
+      }
+
+      .purple {
+        background: #63C;
+      }
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+  
+  
+  
+    <div id="map">
+		
+				
+	</div>
+  	<script type="text/javascript">
+      var database=firebase.database();
+      var ref=database.ref("Data");
+      ref.on("value",gotData,errData);
+      var lat = new Array();
+      var lon = new Array();
+      var categ = new Array();
+      var descrip = new Array();
+      var countr = 0;
+            function heatadd(countr) {
+              var map = new google.maps.Map(document.getElementById('map'), {
+                center: new google.maps.LatLng(19.203327, 72.8372299),
+                zoom: 12
+              }
+			  
+				
+			
+				
+				
+				
+				
+				
+			  );
+	
+            var taxiData = [new google.maps.LatLng(19.203327, 72.8447684)];
+            var pointArray = new google.maps.MVCArray(taxiData);
+            console.log(lat);
+            console.log(lon);
+            for( var xy = 0 ; xy < countr ; xy++ )
+            {
+              var aa = lat[xy];
+              var bb = lon[xy];
+              if (categ[xy]=="Structure.Damage"){
+              var image = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png';
+              }
+              else if (categ[xy]=="Fire"){
+              var image = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png';
+              }
+              else if (categ[xy]=="Water.Logging"){
+              var image = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
+              }
+              else if (categ[xy]=="Route.Blocked"){
+              var image = 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png';
+              }
+              else if (categ[xy]=="Deceased.Victim"){
+              var image = 'http://maps.google.com/mapfiles/ms/icons/orange-dot.png';
+              }
+              else if (categ[xy]=="Stranded.Victim"){
+              var image = 'http://maps.google.com/mapfiles/ms/icons/purple-dot.png';
+              }
+              else if (categ[xy]=="Animal.Issue"){
+              var image = 'http://maps.google.com/mapfiles/ms/icons/pink-dot.png';
+              }
+              var myLatLng = new google.maps.LatLng(aa, bb);
+              var des = descrip[xy];
+              var marker = new google.maps.Marker({
+              position: myLatLng,
+              map: map,
+              title: des,
+              icon: image
+			  
+              });
+			  var content = "<b>Category:</b>"+categ[xy]+"<br><b>Latitude</b>"+aa+"<br><b>Longitude</b>"+bb+"<br><b>Description:</b> "+des;
+
+				var infowindow = new google.maps.InfoWindow()
+
+				google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){ 
+    return function() {
+        infowindow.setContent(content);
+        infowindow.open(map,marker);
+    };
+})(marker,content,infowindow));
+              console.log("Lat: "+aa+", Longi: "+bb);
+              pointArray.push(new google.maps.LatLng(lat[xy],lon[xy]));
+            }
+            // console.log("Arr: "+pointArray);
+            heatmap = new google.maps.visualization.HeatmapLayer({
+                    data: pointArray,
+                    map: map
+                  });
+				  
+				  var legend = document.getElementById('legend');
+legend.id = 'legend';
+        var content = [];
+        content.push('<h3>LEGEND*</h3>');
+        content.push('<p><div class="color red"></div>FIRE</p>');
+        content.push('<p><div class="color yellow"></div>ROUTE BLOCKED</p>');
+        content.push('<p><div class="color green"></div>STRUCTURE DAMAGE</p>');
+        content.push('<p><div class="color blue"></div>WATERLOG</p>');
+        content.push('<p><div class="color purple"></div>STRANDED VICTIM</p>');
+        
+        legend.innerHTML = content.join('');
+        legend.index = 1;
+        map.controls[google.maps.ControlPosition.RIGHT_TOP].push(legend);
+                }
+				
+				
+            function toggleHeatmap() {
+              heatmap.setMap(heatmap.getMap() ? null : map);
+            }
+			
+			
+			
+				
+            function changeGradient() {
+              var gradient = [
+                'rgba(0, 255, 255, 0)',
+                'rgba(0, 255, 255, 1)',
+                'rgba(0, 191, 255, 1)',
+                'rgba(0, 127, 255, 1)',
+                'rgba(0, 63, 255, 1)',
+                'rgba(0, 0, 255, 1)',
+                'rgba(0, 0, 223, 1)',
+                'rgba(0, 0, 191, 1)',
+                'rgba(0, 0, 159, 1)',
+                'rgba(0, 0, 127, 1)',
+                'rgba(63, 0, 91, 1)',
+                'rgba(127, 0, 63, 1)',
+                'rgba(191, 0, 31, 1)',
+                'rgba(255, 0, 0, 1)'
+              ]
+              heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
+            }
+            function changeRadius() {
+              heatmap.set('radius', heatmap.get('radius') ? null : 20);
+            }
+            function changeOpacity() {
+              heatmap.set('opacity', heatmap.get('opacity') ? null : 0.2);
+            }
+            function gotData(data){
+              console.log("hello");
+        			var users=data.val();
+              for(x in users){
+                for(y in users[x]){
+                  lat.push(users[x][y].lat);
+                  lon.push(users[x][y].lon);
+                  categ.push(users[x][y].category);
+                  descrip.push(users[x][y].description);
+                  countr++;
+                  console.log(users[x][y].category);
+                }
+              }
+              heatadd(countr);
+        		}
+            function errData(err) {
+        			// body...
+        			console.log(err);
+        		}
+				
+				
+    /*  function downloadUrl(url, callback) {
+        var request = window.ActiveXObject ?
+            new ActiveXObject('Microsoft.XMLHTTP') :
+            new XMLHttpRequest;
+        request.onreadystatechange = function() {
+          if (request.readyState == 4) {
+            request.onreadystatechange = doNothing;
+            callback(request, request.status);
+          }
+        };
+        request.open('GET', url, true);
+        request.send(null);
+      }
+      function doNothing() {} */
+	  
+	  
+    </script>
+	
+
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBlmpAbli8J3nPVMzxwG67T83VL9NohN8k&libraries=visualization">
+    </script>
+  </body>
+</html>

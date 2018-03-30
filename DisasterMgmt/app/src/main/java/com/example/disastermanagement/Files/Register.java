@@ -2,6 +2,8 @@ package com.example.disastermanagement.Files;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -41,6 +43,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
     private int RC_SIGN_IN=1;
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -158,8 +161,11 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("signin", "signInWithCredential:success");
                             FirebaseUser user = firebaseAuth.getCurrentUser();
+
+
                             Toast.makeText(getApplicationContext(),user.getEmail()+"",Toast.LENGTH_LONG).show();
                             startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+
                             //updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
