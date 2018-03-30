@@ -2,6 +2,7 @@
   <head>
 
 <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript" src="https://www.gstatic.com/firebasejs/4.12.0/firebase-database.js">
 
 </script>
@@ -37,6 +38,7 @@
     <div>
      <table name="disasterdisplay" id="table" border=1 cellpadding=5px></table>
    </div>
+   <div id="piechart" style="width: 900px; height: 500px;"></div>
   	<script type="text/javascript">
 
       var database=firebase.database();
@@ -46,6 +48,7 @@
       var lon = new Array();
       var categ = new Array();
       var descrip = new Array();
+
       var countr = 0;
 
         function gotData(data){
@@ -64,6 +67,7 @@
             }
 
             disptable(categ,descrip,lat,lon);
+            drawchart(categ,descrip,lat,lon);
         }
 
             function errData(err) {
@@ -123,6 +127,75 @@
 // append table to container
 
         }
+
+    function drawchart(categ, descrip,lat,lon)
+    {
+      var countt = [0,0,0,0,0,0,0];
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      var catnew = categ.unique();
+
+      for(var newx = 0 ; newx < catnew.length ; newx++ )
+      {
+        var chkstr = catnew[newx];
+        for(var xxy = 0 ; xxy < categ.length ; xxy++ )
+        {
+          if(categ[xxy]==chkstr)
+          {
+            countt[newx]++;
+          }
+        }
+      }
+
+      console.log(catnew);
+      console.log(countt);
+
+
+
+      function drawChart() {
+
+      /*  var data = google.visualization.arrayToDataTable([
+          ['Attributes', 'Numb of values'],
+          ['Category', categ.length],
+          ['Description', descrip.length],
+          ['Latitude',  lat.length],
+          ['Longitude', lon.length],
+        ]); */
+        var data = google.visualization.arrayToDataTable([
+          ['Attributes', 'Numb of values'],
+          [catnew[0], countt[0]],
+          [catnew[1], countt[1]],
+          [catnew[2], countt[2]],
+          [catnew[3], countt[3]],
+          [catnew[4], countt[4]],
+          [catnew[5], countt[5]],
+          [catnew[6], countt[6]],
+        ]);
+
+        var options = {
+          title: 'My Daily Activities',
+          pieHole: 0.4,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        chart.draw(data, options);
+      }
+
+
+
+    }
+    Array.prototype.unique = function() {
+    var arr = [];
+    for(var i = 0; i < this.length; i++) {
+        if(!arr.includes(this[i])) {
+            arr.push(this[i]);
+        }
+    }
+    return arr;
+    }
+
 
 
     </script>
