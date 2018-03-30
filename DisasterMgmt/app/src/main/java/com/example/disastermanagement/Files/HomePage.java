@@ -1,7 +1,11 @@
 package com.example.disastermanagement.Files;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -14,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +36,7 @@ import com.example.disastermanagement.navigation.FragmentNavigationManager;
 import com.example.disastermanagement.navigation.NavigationManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
 
 public class HomePage extends AppCompatActivity {
 
@@ -47,29 +53,36 @@ public class HomePage extends AppCompatActivity {
     private List<String> mExpandableListTitle;
     private NavigationManager mNavigationManager;
     private Map<String, List<String>> mExpandableListData;
+    private TextView nav_text_view;
+    private SharedPreferences preferences;
+    private FirebaseAuth mAuth;
+    private  FirebaseAuth.AuthStateListener mAuthstateListener;
+    private ImageView user_img;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
-        /*Button logout=(Button)findViewById(R.id.logout);
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                finish();
-                startActivity(new Intent(getApplicationContext(),LoginActivity.class));
-            }
-        });*/
-        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
+        mAuth=FirebaseAuth.getInstance();
+
+        //FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mActivityTitle = getTitle().toString();
         mExpandableListView = (ExpandableListView) findViewById(R.id.navList);
         mNavigationManager = FragmentNavigationManager.obtain(this);
+
         LayoutInflater inflater = getLayoutInflater();
         View listHeaderView = inflater.inflate(R.layout.nav_header, null, false);
-        TextView nav_user = (TextView)listHeaderView.findViewById(R.id.name);
-        nav_user.setText(user.getEmail());
+        user_img=listHeaderView.findViewById(R.id.avatar);
+        nav_text_view=(TextView)listHeaderView.findViewById(R.id.name);
+        preferences=getSharedPreferences("GoogleInfo",MODE_PRIVATE);
+        String name=preferences.getString("name","");
+        String photo=preferences.getString("photo","");
+        Toast.makeText(this,name,Toast.LENGTH_SHORT).show();
+        nav_text_view.setText(name);
+        Uri pp=Uri.parse(photo);
+        Picasso.with(this).load(pp).into(user_img);
+        //nav_user.setText(user.getEmail());
 
 
         mExpandableListView.addHeaderView(listHeaderView);
@@ -82,11 +95,18 @@ public class HomePage extends AppCompatActivity {
         }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-
+        mAuthstateListener=new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if(firebaseAuth.getCurrentUser()==null){
+                    Toast.makeText(getApplicationContext(),"You have been successfully logged out.",Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(HomePage.this,LoginActivity.class));
+                }
+            }
+        };
 
         //getSupportActionBar().setTitle("Disaster Application");
     }
-
 
     private void selectFirstItemAsDefault() {
         if (mNavigationManager != null) {
@@ -124,7 +144,7 @@ public class HomePage extends AppCompatActivity {
                 //getSupportActionBar().setTitle(selectedItem);
 
                 //change activity when clicked on item
-                if(selectedItem.equals("Home"))
+                if(selectedItem.equals("1.Home"))
                 {
                     MapActivity fragment = new MapActivity();
                     android.support.v4.app.FragmentTransaction fragmentTransaction =
@@ -135,49 +155,42 @@ public class HomePage extends AppCompatActivity {
 //                    //i.putExtra("page",""+selectedItem);
 //                    startActivity(i);
                 }else
-                if(selectedItem.equals("Disaster Reporting"))
+                if(selectedItem.equals("2.Feed"))
                 {
                     getSupportFragmentManager().beginTransaction().replace(R.id.container,new Entry()).commit();
                     Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
                 }
                 else
-                if(selectedItem.equals("Resource"))
-                {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container,new ResourceFragment()).commit();
-                    Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
-                }
-                else
-                if(selectedItem.equals("Nearest"))
+                if(selectedItem.equals("3.Form"))
                 {
                     Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
                 }
                 else
-                if(selectedItem.equals("Feed"))
-                {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container,new FeedFragment()).commit();
-                    Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
-                }
-                else
-                if(selectedItem.equals("Call"))
+                if(selectedItem.equals("4.Nearest"))
                 {
                     Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
                 }
                 else
-                if(selectedItem.equals("SMS"))
+                if(selectedItem.equals("5.Call"))
                 {
                     Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
                 }
                 else
-                if(selectedItem.equals("Logout")){//logout
-                    Toast.makeText(HomePage.this, ""+selectedItem, Toast.LENGTH_SHORT).show();
+                if(selectedItem.equals("6.SMS"))
+                {
+                    Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
+                }
+                else
+                if(selectedItem.equals("7.Logout")){//logout
+                    mAuth.signOut();
+                    finish();
 //                    Intent i = new Intent(HomePage.this, ListActivity.class);
 //                    i.putExtra("category",""+getCategory(selectedItem));
 //                    i.putExtra("catgroupid",""+getCatCroupID(selectedItem));
 //                    i.putExtra("page",""+selectedItem);
 //                    startActivity(i);
-                }else {
-                    Toast.makeText(HomePage.this, "Error in IF" + selectedItem, Toast.LENGTH_SHORT).show();
                 }
+                Toast.makeText(HomePage.this, ""+selectedItem, Toast.LENGTH_SHORT).show();
                 mDrawerLayout.closeDrawer(GravityCompat.START);
                 return false;
             }
@@ -221,8 +234,6 @@ public class HomePage extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         //getMenuInflater().inflate(R.menu.main_menu, menu);
-        MenuInflater mi=getMenuInflater();
-        mi.inflate(R.menu.logout, menu);
         return true;
     }
 
@@ -235,9 +246,6 @@ public class HomePage extends AppCompatActivity {
         // Activate the navigation drawer toggle
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
-        }
-        if (id==R.id.logout_item){
-            Toast.makeText(this,"logout",Toast.LENGTH_SHORT).show();
         }
         /*if (id == R.id.aboutus) {
             Intent i = new Intent(HomePage.this,WebActivity.class);
@@ -299,7 +307,6 @@ public class HomePage extends AppCompatActivity {
             finishAffinity();
         }
     }
-
 
 
 

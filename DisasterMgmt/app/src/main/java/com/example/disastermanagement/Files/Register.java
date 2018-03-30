@@ -52,7 +52,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-        signInButton = findViewById(R.id.sign_in_button);
+        signInButton = findViewById(R.id.s_i_b);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override

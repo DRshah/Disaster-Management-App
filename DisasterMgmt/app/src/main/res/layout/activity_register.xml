@@ -24,7 +24,7 @@
         android:text="Register User"/>
 
     <com.google.android.gms.common.SignInButton
-        android:id="@+id/sign_in_button"
+        android:id="@+id/s_i_b"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
