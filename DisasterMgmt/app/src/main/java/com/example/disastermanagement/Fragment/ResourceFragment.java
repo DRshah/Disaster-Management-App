@@ -3,12 +3,15 @@ package com.example.disastermanagement.Fragment;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +30,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ResourceFragment extends android.support.v4.app.Fragment {
 
@@ -126,12 +131,17 @@ public class ResourceFragment extends android.support.v4.app.Fragment {
                         // Ask user to enable GPS/network in settings
                         gpsTracker.showSettingsAlert();
                     }
+                    String area=get_city(latitude,longitude);
                     lat = latitude + "";
                     lon = longitude + "";
 
-                    Resource data=new Resource(amount,descr,itm,nm,lat,lon,ph);
+                    Resource data=new Resource(amount,descr,itm,nm,lat,lon,ph,area);
                     Toast.makeText(getContext(),data.toString(),Toast.LENGTH_LONG).show();
                     databaseReference.child("Resources").child(firebaseUser.getUid()).push().setValue(data);
+                    name.setText("");
+                    contact.setText("");
+                    amt.setText("");
+                    desc.setText("");
                 }
                 /*if(valid==1) {
                     new ResourceSubmit(getApplicationContext()).execute(message);
@@ -143,6 +153,34 @@ public class ResourceFragment extends android.support.v4.app.Fragment {
         });
 
         return view;
+    }
+    public String get_city(double lat, double lng) {
+        String add="";
+        Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
+            Address obj = addresses.get(0);
+//            add = obj.getAddressLine(0);
+//            add = add + " " + obj.getCountryName();
+//            add = add + " " + obj.getCountryCode();
+//            add = add + " " + obj.getAdminArea();
+//            add = add + " " + obj.getPostalCode();
+//            add = add + " " + obj.getSubAdminArea();
+            add = add + " " + obj.getLocality();
+//            add = add + " " + obj.getSubThoroughfare();
+
+            Log.v("IGA", "Address" + add);
+            // Toast.makeText(this, "Address=>" + add,
+            // Toast.LENGTH_SHORT).show();
+
+            // TennisAppActivity.showDialog(add);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        return add;
     }
 
     public String remSpace(String old)

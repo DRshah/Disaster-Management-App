@@ -92,7 +92,8 @@ public class MapActivity extends SupportMapFragment implements OnMapReadyCallbac
         mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(17.4898, 78.44973) , 10.0f) );
 
 
-//        double lat=gps.getLatitude();
+//        double lat=gps.
+// getLatitude();
 //        double lon=gps.getLongitude();
 //        System.out.println("location"+ lon+"  hello "+lat);
         // Add a marker in Sydney and move the camera

@@ -228,6 +228,8 @@ public class Entry extends android.support.v4.app.Fragment {
 
                                         Feed data=new Feed(category,descrip,latitudes,longitudes,uri.toString(),get_timestamp(),fid,area);
                                         databaseReference.child("Data").child(firebaseUser.getUid()).push().setValue(data);
+                                        descr.setText("");
+                                        imageView.setImageBitmap(null);
                                         progressdialog.dismiss();
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {

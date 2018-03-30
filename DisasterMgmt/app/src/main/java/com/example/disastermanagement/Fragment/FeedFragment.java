@@ -81,6 +81,8 @@ public class FeedFragment extends android.support.v4.app.Fragment {
                 for(DataSnapshot usersnapshot:dataSnapshot.getChildren()){
                     //
                     for(DataSnapshot usersnapshot2:usersnapshot.getChildren()){
+//                        for (DataS)
+
                         Feed feed=usersnapshot2.getValue(Feed.class);
                         category=feed.category.trim();
                         System.out.println(category);

@@ -77,7 +77,6 @@ public class HomePage extends AppCompatActivity {
             //preferences.edit().putString("photo",personPhoto+"").apply();
         }
 
-
         //FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mActivityTitle = getTitle().toString();
@@ -117,6 +116,13 @@ public class HomePage extends AppCompatActivity {
                 }
             }
         };
+
+
+        android.support.v4.app.FragmentTransaction fragmentTransaction =
+                getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.container, new MapActivity());
+        fragmentTransaction.commit();
+
 
         //getSupportActionBar().setTitle("Disaster Application");
     }
@@ -167,11 +173,6 @@ public class HomePage extends AppCompatActivity {
 //                    Intent i = new Intent(HomePage.this, MapActivity.class);
 //                    //i.putExtra("page",""+selectedItem);
 //                    startActivity(i);
-                }else
-                if(selectedItem.equals("Disaster Reporting"))
-                {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container,new FeedFragment()).commit();
-                    Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
                 }
                 else
                 if(selectedItem.equals("Disaster Reporting"))
@@ -180,7 +181,6 @@ public class HomePage extends AppCompatActivity {
                     Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
                 }
                 else
->>>>>>> 39336eca25a7ce191e4e3e3979a09337f40f4865
                 if(selectedItem.equals("Nearest"))
                 {
                     Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
