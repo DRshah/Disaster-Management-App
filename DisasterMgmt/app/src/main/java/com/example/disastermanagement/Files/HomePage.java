@@ -144,7 +144,7 @@ public class HomePage extends AppCompatActivity {
                 //getSupportActionBar().setTitle(selectedItem);
 
                 //change activity when clicked on item
-                if(selectedItem.equals("1.Home"))
+                if(selectedItem.equals("Home"))
                 {
                     MapActivity fragment = new MapActivity();
                     android.support.v4.app.FragmentTransaction fragmentTransaction =
@@ -155,33 +155,33 @@ public class HomePage extends AppCompatActivity {
 //                    //i.putExtra("page",""+selectedItem);
 //                    startActivity(i);
                 }else
-                if(selectedItem.equals("2.Feed"))
+                if(selectedItem.equals("Feed"))
                 {
                     getSupportFragmentManager().beginTransaction().replace(R.id.container,new Entry()).commit();
                     Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
                 }
                 else
-                if(selectedItem.equals("3.Form"))
+                if(selectedItem.equals("Form"))
                 {
                     Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
                 }
                 else
-                if(selectedItem.equals("4.Nearest"))
+                if(selectedItem.equals("Nearest"))
                 {
                     Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
                 }
                 else
-                if(selectedItem.equals("5.Call"))
+                if(selectedItem.equals("Call"))
                 {
                     Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
                 }
                 else
-                if(selectedItem.equals("6.SMS"))
+                if(selectedItem.equals("SMS"))
                 {
                     Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
                 }
                 else
-                if(selectedItem.equals("7.Logout")){//logout
+                if(selectedItem.equals("Logout")){//logout
                     mAuth.signOut();
                     finish();
 //                    Intent i = new Intent(HomePage.this, ListActivity.class);
