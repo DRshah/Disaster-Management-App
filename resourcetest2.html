@@ -40,12 +40,14 @@
   	<script type="text/javascript">
 
       var database=firebase.database();
-      var ref=database.ref("Data");
+      var ref=database.ref("Resources");
       ref.on("value",gotData,errData);
-      var lat = new Array();
-      var lon = new Array();
-      var categ = new Array();
-      var descrip = new Array();
+      var names = new Array();
+      var loc = new Array();
+      var phn = new Array();
+      var amt = new Array();
+      var item = new Array();
+      var descr = new Array();
       var countr = 0;
 
         function gotData(data){
@@ -55,15 +57,17 @@
               for(x in users){
                 for(y in users[x]){
 
-                  lat.push(users[x][y].lat);
-                  lon.push(users[x][y].lon);
-                  categ.push(users[x][y].category);
-                  descrip.push(users[x][y].description);
+                  names.push(users[x][y].name);
+                  loc.push(users[x][y].loc);
+                  phn.push(users[x][y].phn);
+                  amt.push(users[x][y].amt);
+                  item.push(users[x][y].item);
+                  descr.push(users[x][y].descr);
                   countr++;
                 }
             }
 
-            disptable(categ,descrip,lat,lon);
+            disptable(names,loc,phn,amt,item,descr);
         }
 
             function errData(err) {
@@ -71,50 +75,61 @@
         			console.log(err);
         		}
 
-        function disptable(categ, descrip,lat,lon)
+        function disptable(names,loc,phn,amt,item,descr)
         {
-        console.log(categ);
-        console.log(descrip);
+        console.log(names);
+        console.log(loc);
         var table = document.getElementById('table');
         var tbody = document.createElement('tbody');
 
             var rowhead = document.createElement('tr');
             var cellhead = document.createElement('td');
-            cellhead.textContent = "Category";
-            cellhead.style.textStyle = "bold"
+            cellhead.textContent = "Name";
             rowhead.appendChild(cellhead);
             var cell2head = document.createElement('td');
-            cell2head.textContent = "Description";
+            cell2head.textContent = "Location";
             rowhead.appendChild(cell2head);
             var cell3head = document.createElement('td');
-            cell3head.textContent = "Latitude";
+            cell3head.textContent = "Phone Number";
             rowhead.appendChild(cell3head);
             var cell4head = document.createElement('td');
-            cell4head.textContent = "Longitude";
+            cell4head.textContent = "Item";
             rowhead.appendChild(cell4head);
+            var cell5head = document.createElement('td');
+            cell5head.textContent = "Amount";
+            rowhead.appendChild(cell5head);
+            var cell6head = document.createElement('td');
+            cell6head.textContent = "Description";
+            rowhead.appendChild(cell6head);
             tbody.appendChild(rowhead);
 // loop array
-        for (i = 0; i < lat.length; i++) {
-    // get inner array
-    // create tr element
+        for (i = 0; i < names.length; i++) {
+
         var row = document.createElement('tr');
-    // loop inner array
-        // create td element
+
             var cell = document.createElement('td');
-            cell.textContent = categ[i];
+            cell.textContent = names[i];
             row.appendChild(cell);
 
             var cell2 = document.createElement('td');
-            cell2.textContent = descrip[i];
+            cell2.textContent = loc[i];
             row.appendChild(cell2);
 
             var cell3 = document.createElement('td');
-            cell3.textContent = lat[i];
+            cell3.textContent = phn[i];
             row.appendChild(cell3);
 
             var cell4 = document.createElement('td');
-            cell4.textContent = lon[i];
+            cell4.textContent = item[i];
             row.appendChild(cell4);
+
+            var cell5 = document.createElement('td');
+            cell5.textContent = amt[i];
+            row.appendChild(cell5);
+
+            var cell6 = document.createElement('td');
+            cell6.textContent = descr[i];
+            row.appendChild(cell6);
     //append tr to tbody
         tbody.appendChild(row);
         }
