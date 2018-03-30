@@ -1,0 +1,130 @@
+<!DOCTYPE html >
+  <head>
+
+<script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/firebasejs/4.12.0/firebase-database.js">
+
+</script>
+
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyCJU-7FLRU5yncwO4CQCIn2bzbhDtFyuz8",
+    authDomain: "sih2018-11ae3.firebaseapp.com",
+    databaseURL: "https://sih2018-11ae3.firebaseio.com",
+    projectId: "sih2018-11ae3",
+    storageBucket: "sih2018-11ae3.appspot.com",
+    messagingSenderId: "351828754712"
+  };
+  firebase.initializeApp(config);
+</script>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <title>Disas</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <div>
+     <table name="disasterdisplay" id="table" border=1 cellpadding=5px></table>
+   </div>
+  	<script type="text/javascript">
+
+      var database=firebase.database();
+      var ref=database.ref("Data");
+      ref.on("value",gotData,errData);
+      var lat = new Array();
+      var lon = new Array();
+      var categ = new Array();
+      var descrip = new Array();
+      var countr = 0;
+
+        function gotData(data){
+        console.log("hello");
+
+        var users=data.val();
+              for(x in users){
+                for(y in users[x]){
+
+                  lat.push(users[x][y].lat);
+                  lon.push(users[x][y].lon);
+                  categ.push(users[x][y].category);
+                  descrip.push(users[x][y].description);
+                  countr++;
+                }
+            }
+
+            disptable(categ,descrip,lat,lon);
+        }
+
+            function errData(err) {
+        			// body...
+        			console.log(err);
+        		}
+
+        function disptable(categ, descrip,lat,lon)
+        {
+        console.log(categ);
+        console.log(descrip);
+        var table = document.getElementById('table');
+        var tbody = document.createElement('tbody');
+
+            var rowhead = document.createElement('tr');
+            var cellhead = document.createElement('td');
+            cellhead.textContent = "Category";
+            cellhead.style.textStyle = "bold"
+            rowhead.appendChild(cellhead);
+            var cell2head = document.createElement('td');
+            cell2head.textContent = "Description";
+            rowhead.appendChild(cell2head);
+            var cell3head = document.createElement('td');
+            cell3head.textContent = "Latitude";
+            rowhead.appendChild(cell3head);
+            var cell4head = document.createElement('td');
+            cell4head.textContent = "Longitude";
+            rowhead.appendChild(cell4head);
+            tbody.appendChild(rowhead);
+// loop array
+        for (i = 0; i < lat.length; i++) {
+    // get inner array
+    // create tr element
+        var row = document.createElement('tr');
+    // loop inner array
+        // create td element
+            var cell = document.createElement('td');
+            cell.textContent = categ[i];
+            row.appendChild(cell);
+
+            var cell2 = document.createElement('td');
+            cell2.textContent = descrip[i];
+            row.appendChild(cell2);
+
+            var cell3 = document.createElement('td');
+            cell3.textContent = lat[i];
+            row.appendChild(cell3);
+
+            var cell4 = document.createElement('td');
+            cell4.textContent = lon[i];
+            row.appendChild(cell4);
+    //append tr to tbody
+        tbody.appendChild(row);
+        }
+// append tbody to table
+        table.appendChild(tbody);
+// append table to container
+
+        }
+
+
+    </script>
+  </body>
+</html>
