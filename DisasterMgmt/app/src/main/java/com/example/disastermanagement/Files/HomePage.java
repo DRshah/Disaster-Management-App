@@ -201,6 +201,11 @@ public class HomePage extends AppCompatActivity {
 //                    i.putExtra("page",""+selectedItem);
 //                    startActivity(i);
                 }
+                if(selectedItem.equals("Feed"))
+                {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container,new FeedFragment()).commit();
+                    Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
+                }
                 else
                 if(selectedItem.equals("Resource"))
                 {

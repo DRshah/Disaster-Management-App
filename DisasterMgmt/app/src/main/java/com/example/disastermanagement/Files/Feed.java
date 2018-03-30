@@ -52,7 +52,7 @@ public class Feed {
     }
 
 
-    public String getDateTime(){
+    public String getDateime(){
         return datetime;
     }
 
@@ -64,4 +64,31 @@ public class Feed {
         return area;
     }
 
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public void setLon(String lon) {
+        this.lon = lon;
+    }
+
+    public void setFid(String fid) {
+        this.fid = fid;
+    }
+
+    public void setDatetime(String datetime) {
+        this.datetime = datetime;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
 }

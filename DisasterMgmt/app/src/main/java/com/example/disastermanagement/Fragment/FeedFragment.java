@@ -35,6 +35,7 @@ public class FeedFragment extends android.support.v4.app.Fragment {
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
     private String description,area,image,dateTime,category;
+    ArrayList<Feed> feedArrayList;
 
 
     private RecyclerView recyclerView;
@@ -70,24 +71,28 @@ public class FeedFragment extends android.support.v4.app.Fragment {
         View view=inflater.inflate(R.layout.fragment_feed, container, false);
 
         recyclerView = (RecyclerView)view.findViewById(R.id.card_recycler_view);
+        feedArrayList=new ArrayList<Feed>();
 
         firebaseAuth=FirebaseAuth.getInstance();
         databaseReference=FirebaseDatabase.getInstance().getReference("Data");
 
-        ValueEventListener postListener=new ValueEventListener() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                //
-                for(DataSnapshot usersnapshot:dataSnapshot.getChildren()){
-                    //
-                    for(DataSnapshot usersnapshot2:usersnapshot.getChildren()){
-//                        for (DataS)
 
-                        Feed feed=usersnapshot2.getValue(Feed.class);
-                        category=feed.category.trim();
-                        System.out.println(category);
-                        cat[ctr]=category;
-                        ctr++;
+                for(DataSnapshot usersnapshot:dataSnapshot.getChildren()){
+                    System.out.println("outer");
+                    //
+                    for(DataSnapshot entry:usersnapshot.getChildren()){
+                        System.out.println("2nd loop");
+
+                            Feed feed = entry.getValue(Feed.class);
+                            feedArrayList.add(feed);
+                            /*category = feed.category;
+
+                            System.out.println(category);
+                            cat[ctr] = category;
+                            ctr++;*/
 
 
                     }
@@ -97,9 +102,9 @@ public class FeedFragment extends android.support.v4.app.Fragment {
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                System.out.println("error"+databaseError.getMessage());
             }
-        };
+        });
         return view;
     }
 
@@ -109,24 +114,26 @@ public class FeedFragment extends android.support.v4.app.Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        ArrayList androidVersions = prepareData();
-        DataAdapter adapter = new DataAdapter(getContext(),androidVersions);
+        //prepareData();
+        DataAdapter adapter = new DataAdapter(getContext(),feedArrayList);
         recyclerView.setAdapter(adapter);
 
     }
-    private ArrayList prepareData(){
+    private void prepareData(){
 
-        ArrayList android_version = new ArrayList<>();
+        for (Feed c:feedArrayList){
+            if (c.getImage()==""){
+                c.setImage("https://firebasestorage.googleapis.com/v0/b/sih2018-11ae3.appspot.com/o/Photos%2F1024px-No_image_available.png?alt=media&token=adf11caa-adf6-4b98-a86c-876bbe9ef8de");
+            }
+        }
+
+        /*ArrayList android_version = new ArrayList<>();
         for(int i=0;i<cat.length;i++){
             AndroidVersion androidVersion = new AndroidVersion();
             androidVersion.setAndroid_version_name(cat[i]);
             androidVersion.setAndroid_image_url(android_image_urls[i]);
             android_version.add(androidVersion);
         }
-        return android_version;
+        return android_version;*/
     }
-
-
-
-
 }
