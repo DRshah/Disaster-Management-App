@@ -72,6 +72,7 @@
       var areas = new Array();
       var uniquearea = new Array();
       var countr = 0;
+      var dis = 1 ;
 
         function gotData(data){
         console.log("hello");
@@ -88,7 +89,14 @@
                   countr++;
                 }
             }
+            if(dis==1)
+            {
             disptable(names,loc,phn,amt,item,descr,areas);
+            dis++;
+            }
+            else {
+              document.location.reload();
+            }
             drawchart2(item,amt,areas,uniquearea);
             drawchart(item);
         }

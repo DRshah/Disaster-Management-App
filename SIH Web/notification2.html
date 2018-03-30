@@ -1,0 +1,102 @@
+<!DOCTYPE html >
+  <head>
+
+<script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/firebasejs/4.12.0/firebase-database.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyCJU-7FLRU5yncwO4CQCIn2bzbhDtFyuz8",
+    authDomain: "sih2018-11ae3.firebaseapp.com",
+    databaseURL: "https://sih2018-11ae3.firebaseio.com",
+    projectId: "sih2018-11ae3",
+    storageBucket: "sih2018-11ae3.appspot.com",
+    messagingSenderId: "351828754712"
+  };
+  firebase.initializeApp(config);
+</script>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <title>Dashboard</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+    </style>
+  </head>
+
+  <body>
+
+<form name="myform" action="/SIH%20Web/notifsend.php" align="center" method="post" id="myform">
+  <textarea name="notif" rows="4" cols="50" align="center"></textarea>
+    </br>
+    <input id="btnsubmit" type="button" disabled="true" value="SUBMIT" name="btnsubmit" onclick="submitform();">
+</form>
+
+  	<script type="text/javascript">
+      var database=firebase.database();
+      var ref=database.ref("Token");
+      var appendr="";
+      var cnt = 1;
+      ref.on("value",gotData,errData);
+      var token = new Array();
+
+        function gotData(data){
+        var users=data.val();
+              for(x in users){
+                  token.push(users[x].token);
+                  if(cnt==1)
+                  {
+                    appendr = users[x].token;
+                    cnt++;
+                  }
+                  else {
+                    appendr = appendr+"///"+users[x].token;
+                    cnt++;
+                  }
+
+            }
+
+            console.log(appendr);
+            var btn = document.getElementById("btnsubmit");
+            btn.disabled=false;
+
+
+        }
+            function errData(err) {
+        			// body...
+        			console.log(err);
+        		}
+            function submitform()
+            {
+              var formmmm=document.getElementById("myform");
+              var hid=document.createElement("input");
+              hid.setAttribute("type","hidden");
+              hid.setAttribute("name","tokens");
+              hid.setAttribute("value",appendr);
+              formmmm.appendChild(hid);
+
+              formmmm.submit();
+            }
+    </script>
+  </body>
+</html>
