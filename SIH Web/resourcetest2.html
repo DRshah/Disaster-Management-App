@@ -2,6 +2,8 @@
   <head>
 
 <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
 <script type="text/javascript" src="https://www.gstatic.com/firebasejs/4.12.0/firebase-database.js">
 </script>
 
@@ -18,7 +20,7 @@
   firebase.initializeApp(config);
 </script>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-    <title>Disas</title>
+    <title>Dashboard</title>
     <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
@@ -33,6 +35,9 @@
 
   <body>
 
+<div id="chart_div" style="width: 900px; height: 500px;"></div>
+<div id="piechart" style="width: 900px; height: 500px;"></div>
+
     <div>
      <table name="disasterdisplay" id="table" border=1 cellpadding=5px></table>
    </div>
@@ -46,7 +51,10 @@
       var amt = new Array();
       var item = new Array();
       var descr = new Array();
+      var areas = new Array();
+      var uniquearea = new Array();
       var countr = 0;
+
         function gotData(data){
         console.log("hello");
         var users=data.val();
@@ -58,16 +66,106 @@
                   amt.push(users[x][y].amount);
                   item.push(users[x][y].item);
                   descr.push(users[x][y].description);
+                  areas.push(users[x][y].area);
                   countr++;
                 }
             }
-            disptable(names,loc,phn,amt,item,descr);
+            disptable(names,loc,phn,amt,item,descr,areas);
+            drawchart2(item,amt,areas,uniquearea);
+            drawchart(item);
         }
+
             function errData(err) {
         			// body...
         			console.log(err);
         		}
-        function disptable(names,loc,phn,amt,item,descr)
+
+            function drawchart2(item,amt,areas,uniquearea)
+            {
+              google.charts.load('current', {'packages':['corechart']});
+              google.charts.setOnLoadCallback(drawVisualization);
+              uniquearea = areas.uniques();
+              function drawVisualization() {
+                var dataxy = new Array(['Resource', 'Food' , 'Water' ,'Rescue team' , 'Blankets' , 'First Aid' , 'Battery and torch lights']);
+                for( var pqr = 0 ; pqr < uniquearea.length ; pqr++ )
+                {
+                  var cntfood=0,cntwater=0,rt=0,bk=0,fa=0,btl=0;
+                  var strr = uniquearea[pqr];
+                  for( var pqrs = 0 ; pqrs < areas.length ; pqrs++ )
+                  {
+                    if(areas[pqrs]==uniquearea[pqr])
+                    {
+                      if(item[pqrs]=="Food")
+                        cntfood++;
+                      else if(item[pqrs]=="Water")
+                        cntwater++;
+                     else if(item[pqrs]=="Rescue team")
+                        rt++;
+                     else if(item[pqrs]=="Blankets")
+                        bk++;
+                     else if(item[pqrs]=="First Aid")
+                        fa++;
+                     else if(item[pqrs]=="Battery and torch lights")
+                        btl++;
+                    }
+                  }
+                  dataxy.push([strr,cntfood,cntwater,rt,bk,fa,btl]);
+                }
+                console.log(dataxy);
+                var datas = google.visualization.arrayToDataTable(dataxy);
+            var options = {
+              title : 'Number of Resources per Area',
+              vAxis: {title: 'Count'},
+              hAxis: {title: 'Area'},
+              seriesType: 'bars',
+              series: {5: {type: 'line'}}
+            };
+            var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
+            chart.draw(datas, options);
+          }
+          }
+
+          function drawchart(categ)
+          {
+            var countt = [0,0,0,0,0,0];
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(drawChart);
+            var catnew = categ.uniques();
+            for(var newx = 0 ; newx < catnew.length ; newx++ )
+            {
+              var chkstr = catnew[newx];
+              for(var xxy = 0 ; xxy < categ.length ; xxy++ )
+              {
+                if(categ[xxy]==chkstr)
+                {
+                  countt[newx]++;
+                }
+              }
+            }
+            console.log(catnew);
+            console.log(countt);
+            function drawChart() {
+              var data = google.visualization.arrayToDataTable([
+                ['Resources', 'Amount required'],
+                [catnew[0], countt[0]],
+                [catnew[1], countt[1]],
+                [catnew[2], countt[2]],
+                [catnew[3], countt[3]],
+                [catnew[4], countt[4]],
+                [catnew[5], countt[5]],
+              ]);
+              var options = {
+                title: 'Resource Types',
+                pieHole: 0.4,
+              };
+              var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+              chart.draw(data, options);
+            }
+          }
+
+
+
+        function disptable(names,loc,phn,amt,item,descr,areas)
         {
         console.log(names);
         console.log(loc);
@@ -92,6 +190,9 @@
             var cell6head = document.createElement('td');
             cell6head.textContent = "Description";
             rowhead.appendChild(cell6head);
+            var cell7head = document.createElement('td');
+            cell7head.textContent = "Area";
+            rowhead.appendChild(cell7head);
             tbody.appendChild(rowhead);
 // loop array
         for (i = 0; i < names.length; i++) {
@@ -114,12 +215,25 @@
             var cell6 = document.createElement('td');
             cell6.textContent = descr[i];
             row.appendChild(cell6);
+            var cell7 = document.createElement('td');
+            cell7.textContent = areas[i];
+            row.appendChild(cell7);
     //append tr to tbody
         tbody.appendChild(row);
         }
 // append tbody to table
         table.appendChild(tbody);
 // append table to container
+        }
+
+        Array.prototype.uniques = function() {
+        var arr = [];
+        for(var i = 0; i < this.length; i++) {
+            if(!arr.includes(this[i])) {
+                arr.push(this[i]);
+            }
+        }
+        return arr;
         }
     </script>
   </body>

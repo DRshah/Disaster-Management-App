@@ -1,0 +1,132 @@
+<!DOCTYPE html >
+  <head>
+
+<script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/firebasejs/4.12.0/firebase-database.js"></script>
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBlmpAbli8J3nPVMzxwG67T83VL9NohN8k&libraries=visualization">
+</script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyCJU-7FLRU5yncwO4CQCIn2bzbhDtFyuz8",
+    authDomain: "sih2018-11ae3.firebaseapp.com",
+    databaseURL: "https://sih2018-11ae3.firebaseio.com",
+    projectId: "sih2018-11ae3",
+    storageBucket: "sih2018-11ae3.appspot.com",
+    messagingSenderId: "351828754712"
+  };
+  firebase.initializeApp(config);
+</script>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <title>Dashboard</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div>
+     <table name="disasterdisplay" id="table" border=1 cellpadding=5px></table>
+   </div>
+
+  	<script type="text/javascript">
+      var database=firebase.database();
+      var ref=database.ref("Data");
+      ref.on("value",gotData,errData);
+      var lat = new Array();
+      var lon = new Array();
+      var categ = new Array();
+      var descrip = new Array();
+      var areas = new Array();
+      var img = new Array();
+      var countr = 0;
+        function gotData(data){
+        console.log("hello");
+        var users=data.val();
+              for(x in users){
+                for(y in users[x]){
+                  lat.push(users[x][y].lat);
+                  lon.push(users[x][y].lon);
+                  categ.push(users[x][y].category);
+                  descrip.push(users[x][y].description);
+                  areas.push(users[x][y].area);
+                  img.push(users[x][y].image);
+                  countr++;
+                }
+            }
+            disptable(categ,descrip,lat,lon,areas,img);
+        }
+            function errData(err) {
+        			// body...
+        			console.log(err);
+        		}
+        function disptable(categ, descrip,lat,lon,areas,img)
+        {
+        console.log(img);
+        var table = document.getElementById('table');
+        var tbody = document.createElement('tbody');
+            var rowhead = document.createElement('tr');
+            var cellhead = document.createElement('td');
+            cellhead.textContent = "Category";
+            cellhead.style.textStyle = "bold"
+            rowhead.appendChild(cellhead);
+            var cell2head = document.createElement('td');
+            cell2head.textContent = "Description";
+            rowhead.appendChild(cell2head);
+            var cell5head = document.createElement('td');
+            cell5head.textContent = "Area";
+            rowhead.appendChild(cell5head);
+            var cell6head = document.createElement('td');
+            cell6head.textContent = "Photo";
+            rowhead.appendChild(cell6head);
+            tbody.appendChild(rowhead);
+// loop array
+        for (i = (lat.length - 1) ; i >=0 ; i--) {
+        var row = document.createElement('tr');
+    // loop inner array
+        // create td element
+            var cell = document.createElement('td');
+            cell.textContent = categ[i];
+            row.appendChild(cell);
+            var cell2 = document.createElement('td');
+            cell2.textContent = descrip[i];
+            row.appendChild(cell2);
+            var cell5 = document.createElement('td');
+            cell5.textContent = areas[i];
+            row.appendChild(cell5);
+            var cell6 = document.createElement('td');
+            if(img[i]==undefined)
+            {
+              img[i] = "ImUnavail.jpg";
+            }
+            cell6.innerHTML="<img height=50px width=75px src='"+img[i]+"' alt='hello'/>";
+            row.appendChild(cell6);
+    //append tr to tbody
+        tbody.appendChild(row);
+        }
+// append tbody to table
+        table.appendChild(tbody);
+// append table to container
+        }
+
+  Array.prototype.uniques = function() {
+  var arr = [];
+  for(var i = 0; i < this.length; i++) {
+      if(!arr.includes(this[i])) {
+          arr.push(this[i]);
+      }
+  }
+  return arr;
+  }
+    </script>
+  </body>
+</html>

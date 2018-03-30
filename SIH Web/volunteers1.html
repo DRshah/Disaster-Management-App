@@ -1,0 +1,126 @@
+<!DOCTYPE html >
+  <head>
+
+<script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/firebasejs/4.12.0/firebase-database.js">
+</script>
+
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyCJU-7FLRU5yncwO4CQCIn2bzbhDtFyuz8",
+    authDomain: "sih2018-11ae3.firebaseapp.com",
+    databaseURL: "https://sih2018-11ae3.firebaseio.com",
+    projectId: "sih2018-11ae3",
+    storageBucket: "sih2018-11ae3.appspot.com",
+    messagingSenderId: "351828754712"
+  };
+  firebase.initializeApp(config);
+</script>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<meta http-equiv="refresh" content="130">
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <title>Volunteer tracking</title>
+    <style>
+	<link href="/apis/fusiontables/docs/samples/style/default.css"
+        rel="stylesheet" type="text/css">
+
+      .color {
+        border: 1px solid;
+        height: 12px;
+        width: 12px;
+        margin-right: 3px;
+        float: left;
+      }
+
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <div id="map"></div>
+
+  	<script type="text/javascript">
+      var database=firebase.database();
+      var ref=database.ref("Volunteer");
+      ref.on("value",gotData,errData);
+      var names = new Array();
+      var lat = new Array();
+      var lon = new Array();
+      var numb = new Array();
+      var countr = 0;
+
+      function gotData(data){
+        console.log("hello");
+        var users=data.val();
+        for(x in users){
+      //    for(y in users[x]){
+            lat.push(users[x].lat);
+            lon.push(users[x].lng);
+            names.push(users[x].email);
+            numb.push(users[x].num);
+            countr++;
+      //    }
+        }
+        console.log(lat);
+        console.log(lon);
+        heatadd(lat,lon,names,numb);
+      }
+      function errData(err) {
+        // body...
+        console.log(err);
+      }
+
+
+
+            function heatadd(lat,lon,names,numb) {
+
+              var map = new google.maps.Map(document.getElementById('map'), {
+                center: new google.maps.LatLng(17.203327, 76.7372299),
+                zoom: 12
+              });
+
+            for( var xy = 0 ; xy < countr ; xy++ )
+            {
+              var aa = lat[xy];
+              var bb = lon[xy];
+              var image = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png';
+              var myLatLng = new google.maps.LatLng(aa,bb);
+              var marker = new google.maps.Marker({
+              position: myLatLng,
+              map: map,
+              icon: image
+              });
+			        var content = "<b>Email:</b>"+names[xy]+"<br><b>Contact No.:</b>"+numb[xy];
+
+				      var infowindow = new google.maps.InfoWindow()
+
+				google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
+    return function() {
+        infowindow.setContent(content);
+        infowindow.open(map,marker);
+    };
+})(marker,content,infowindow));
+            }
+            // console.log("Arr: "+pointArray);
+                }
+
+
+
+    </script>
+
+
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBlmpAbli8J3nPVMzxwG67T83VL9NohN8k">
+    </script>
+  </body>
+</html>
