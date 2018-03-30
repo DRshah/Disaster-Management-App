@@ -97,6 +97,7 @@ public class LoginActivity extends AppCompatActivity implements  View.OnClickLis
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
 
             if (result.isSuccess()) {
+                preferences.edit().putString("LoginType","GOOGLE").apply();
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
                 Uri personPhoto = account.getPhotoUrl();
@@ -157,7 +158,8 @@ public class LoginActivity extends AppCompatActivity implements  View.OnClickLis
     {
         String email=editTextEmail.getText().toString().trim();
         String password=editTextPassword.getText().toString().trim();
-
+        preferences.edit().putString("LoginType","email").apply();
+        preferences.edit().putString("Username",email).apply();
         if(TextUtils.isEmpty(email)){
             //mail is empty
             Toast.makeText(this,"please enter your email",Toast.LENGTH_SHORT).show();
