@@ -23,8 +23,7 @@
         <item>Resource</item>
         <item>Nearest</item>
         <item>Feed</item>
-        <item>Call</item>
-        <item>SMS</item>
+        <item>Emergency numbers</item>
         <item>Logout</item>
     </string-array>
 

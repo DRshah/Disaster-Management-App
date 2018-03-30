@@ -155,14 +155,9 @@ public class HomePage extends AppCompatActivity {
 //                    //i.putExtra("page",""+selectedItem);
 //                    startActivity(i);
                 }else
-                if(selectedItem.equals("Feed"))
+                if(selectedItem.equals("Disaster Reporting"))
                 {
                     getSupportFragmentManager().beginTransaction().replace(R.id.container,new Entry()).commit();
-                    Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
-                }
-                else
-                if(selectedItem.equals("Form"))
-                {
                     Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
                 }
                 else
@@ -171,15 +166,11 @@ public class HomePage extends AppCompatActivity {
                     Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
                 }
                 else
-                if(selectedItem.equals("Call"))
+                if(selectedItem.equals("Emergency Numbers"))
                 {
                     Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
                 }
-                else
-                if(selectedItem.equals("SMS"))
-                {
-                    Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
-                }
+
                 else
                 if(selectedItem.equals("Logout")){//logout
                     mAuth.signOut();
@@ -189,6 +180,12 @@ public class HomePage extends AppCompatActivity {
 //                    i.putExtra("catgroupid",""+getCatCroupID(selectedItem));
 //                    i.putExtra("page",""+selectedItem);
 //                    startActivity(i);
+                }
+                else
+                if(selectedItem.equals("Resource"))
+                {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container,new ResourceFragment()).commit();
+                    Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
                 }
                 Toast.makeText(HomePage.this, ""+selectedItem, Toast.LENGTH_SHORT).show();
                 mDrawerLayout.closeDrawer(GravityCompat.START);
