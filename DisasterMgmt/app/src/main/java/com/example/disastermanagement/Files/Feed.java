@@ -5,15 +5,33 @@ package com.example.disastermanagement.Files;
  */
 
 public class Feed {
-    private String category,description,lat,lon;
+    public String category;
+    private String description;
+    private String lat;
+    private String lon;
     private String image;
+    private String fid;
+    //private String time;
+    private String datetime;
+    private String area;
+    public String getImage() {
+        return image;
+    }
 
-    public Feed(String category, String description, String lat, String lon,String image) {
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+
+    public Feed(String category, String description, String lat, String lon, String image,String datetime,String fid,String area) {
         this.category = category;
         this.description = description;
         this.lat = lat;
         this.lon = lon;
-        this.image=image;
+        this.image = image;
+        this.datetime=datetime;
+        this.fid=fid;
+        this.area=area;
     }
     public Feed(){}
 
@@ -32,4 +50,18 @@ public class Feed {
     public String getLon() {
         return lon;
     }
+
+
+    public String getDateTime(){
+        return datetime;
+    }
+
+    public String getFid(){
+        return fid;
+    }
+
+    public String getArea(){
+        return area;
+    }
+
 }

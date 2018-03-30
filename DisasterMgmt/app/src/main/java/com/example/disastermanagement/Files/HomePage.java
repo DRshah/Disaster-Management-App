@@ -1,8 +1,11 @@
 package com.example.disastermanagement.Files;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -54,16 +57,26 @@ public class HomePage extends AppCompatActivity {
     private NavigationManager mNavigationManager;
     private Map<String, List<String>> mExpandableListData;
     private TextView nav_text_view;
-    private SharedPreferences preferences;
+
     private FirebaseAuth mAuth;
     private  FirebaseAuth.AuthStateListener mAuthstateListener;
     private ImageView user_img;
-
+    SharedPreferences preferences;
+    String personID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
         mAuth=FirebaseAuth.getInstance();
+        preferences=getSharedPreferences("GoogleInfo",MODE_PRIVATE);
+        if(isNetworkAvailable()){
+
+
+            personID= mAuth.getCurrentUser().getUid();
+            preferences.edit().putString("personID",personID).apply();
+            //preferences.edit().putString("photo",personPhoto+"").apply();
+        }
+
 
         //FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -157,12 +170,13 @@ public class HomePage extends AppCompatActivity {
                 }else
                 if(selectedItem.equals("Feed"))
                 {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container,new Entry()).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container,new FeedFragment()).commit();
                     Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
                 }
                 else
-                if(selectedItem.equals("Form"))
+                if(selectedItem.equals("Disaster Reporting"))
                 {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container,new Entry()).commit();
                     Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
                 }
                 else
@@ -306,6 +320,13 @@ public class HomePage extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             finishAffinity();
         }
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 

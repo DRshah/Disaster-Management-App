@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+
+    <TextView
+        android:id="@+id/serviceNAME"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:layout_alignParentLeft="true"
+        android:layout_weight="8"
+        android:text="Emergency"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
+
+
+    <Button
+        android:textStyle="bold"
+        android:id="@+id/callNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="CALL"
+        android:textColor="#C20A10" />
+
+</RelativeLayout>
