@@ -1,0 +1,120 @@
+<!DOCTYPE html >
+  <head>
+
+<script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/firebasejs/4.12.0/firebase-database.js">
+</script>
+
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyCJU-7FLRU5yncwO4CQCIn2bzbhDtFyuz8",
+    authDomain: "sih2018-11ae3.firebaseapp.com",
+    databaseURL: "https://sih2018-11ae3.firebaseio.com",
+    projectId: "sih2018-11ae3",
+    storageBucket: "sih2018-11ae3.appspot.com",
+    messagingSenderId: "351828754712"
+  };
+  firebase.initializeApp(config);
+</script>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<meta http-equiv="refresh" content="20">
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <title>Using MySQL and PHP with Google Maps</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="map"></div>
+  	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+	
+	
+      var database=firebase.database();
+      var ref=database.ref("Data");
+      ref.on("value",gotData,errData);
+      var lat = new Array();
+      var lon = new Array();
+      var categ = new Array();
+      var descrip = new Array();
+	  var strucdmgctr=0,Firectr=0,waterloggingctr=0,routectr=0,dvictimctr=0,strvictimctr=0,animalctr=0;
+      var countr = 0;
+            function heatadd(countr) {
+              var map = new google.maps.Map(document.getElementById('map'), {
+                center: new google.maps.LatLng(19.203327, 72.8372299),
+                zoom: 12
+              });
+            var taxiData = [new google.maps.LatLng(19.203327, 72.8447684)];
+            var pointArray = new google.maps.MVCArray(taxiData);
+            console.log(lat);
+            console.log(lon);
+            for( var xy = 0 ; xy < countr ; xy++ )
+            {
+              var aa = lat[xy];
+              var bb = lon[xy];
+              if (categ[xy]=="Structure.Damage"){
+              var image = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png';
+			  structdmgctr++;
+              }
+              else if (categ[xy]=="Fire"){
+              var image = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png';
+              Firectr++;
+			  }
+              else if (categ[xy]=="Water.Logging"){
+              var image = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
+              waterloggingctr++;
+			  }
+              else if (categ[xy]=="Route.Blocked"){
+              var image = 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png';
+              routectr++;
+			  }
+              else if (categ[xy]=="Deceased.Victim"){
+              var image = 'http://maps.google.com/mapfiles/ms/icons/orange-dot.png';
+              dvictimctr++;
+			  }
+              else if (categ[xy]=="Stranded.Victim"){
+              var image = 'http://maps.google.com/mapfiles/ms/icons/purple-dot.png';
+              strvictimctr++;
+			  }
+              else if (categ[xy]=="Animal.Issue"){
+              var image = 'http://maps.google.com/mapfiles/ms/icons/pink-dot.png';
+              animalctr++;
+			  }
+              google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+	  console.log("abcdL:"+strucdmgctr );
+        var data = google.visualization.arrayToDataTable([
+          ['Task', 'Hours per Day'],
+          ['Work',     11],
+          ['Eat',      2],
+          ['Commute',  2],
+          ['Watch TV', 2],
+          ['Sleep',    7]
+        ]);
+
+        var options = {
+          title: 'My Daily Activities',
+          pieHole: 0.4,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+        chart.draw(data, options);
+      }
+    </script>
+	
+	<div id="donutchart" style="width: 900px; height: 500px;"></div>
+  </body>
+</html>
