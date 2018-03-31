@@ -2,9 +2,9 @@ package com.example.disastermanagement.Files;
 
 public class Resource {
 
-    String amount ,description,item,name,lat,lon,phone,area;
+    String amount ,description,item,name,lat,lon,phone,area,datetime;
 
-    public Resource(String amount, String description, String item, String name, String lat, String lon, String phone, String area) {
+    public Resource(String amount, String description, String item, String name, String lat, String lon, String phone, String area,String datetime) {
         this.amount = amount;
         this.description = description;
         this.item = item;
@@ -13,6 +13,7 @@ public class Resource {
         this.lon = lon;
         this.phone = phone;
         this.area = area;
+        this.datetime=datetime;
     }
 
     public String getArea() {
@@ -39,6 +40,10 @@ public class Resource {
         return lat;
     }
 
+    public String getDatetime() {
+        return datetime;
+    }
+
     public String getLon() {
         return lon;
     }
@@ -49,6 +54,6 @@ public class Resource {
 
     @Override
     public String toString() {
-        return area+amount+description+item+name+lat+lon+phone;
+        return area+amount+description+item+name+lat+lon+phone+" "+datetime;
     }
 }
