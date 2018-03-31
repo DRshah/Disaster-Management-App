@@ -21,7 +21,7 @@ import android.widget.Toast;
 import com.example.disastermanagement.Files.GPSTracker;
 import com.example.disastermanagement.Files.Register_Volunteer;
 import com.example.disastermanagement.R;
-import com.example.disastermanagement.VolunteerTrackingActivity;
+import com.example.disastermanagement.Fragment.VolunteerTrackingActivity;
 import com.google.android.gms.maps.LocationSource;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -53,7 +53,17 @@ public class Volunteer extends android.support.v4.app.Fragment{
         but=(Button)view.findViewById(R.id.but);
         but2=(Button)view.findViewById(R.id.but2);
         but3=(Button)view.findViewById(R.id.but3);
+
         but4=(Button)view.findViewById(R.id.but4);
+//=======
+        but4=view.findViewById(R.id.but4);
+        but4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(),VolunteerTrackingActivity.class));
+            }
+        });
+//>>>>>>> 5ad30e26a73bd8e8f25ac8763eb2a9b5ba7bdb55
         databaseReference=FirebaseDatabase.getInstance().getReference();
         FirebaseDatabase.getInstance().getReference("Volunteer").addValueEventListener(new ValueEventListener() {
             @Override
@@ -76,6 +86,7 @@ public class Volunteer extends android.support.v4.app.Fragment{
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                System.out.println(databaseError.getMessage());
             }
         });
         but2.setOnClickListener(new View.OnClickListener() {
@@ -142,6 +153,10 @@ public class Volunteer extends android.support.v4.app.Fragment{
             }
         });
         return view;
+    }
+    public void onTrack(View view){
+        Intent intent=new Intent(getContext(),VolunteerTrackingActivity.class);
+        startActivity(intent);
     }
     public void showChangeLangDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());

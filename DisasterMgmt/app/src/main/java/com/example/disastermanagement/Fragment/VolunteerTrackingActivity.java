@@ -1,9 +1,10 @@
-package com.example.disastermanagement;
+package com.example.disastermanagement.Fragment;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
 import com.example.disastermanagement.Files.Register_Volunteer;
+import com.example.disastermanagement.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -47,26 +48,45 @@ public class VolunteerTrackingActivity extends FragmentActivity implements OnMap
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+//hello
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(17, 78);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        //mMap.animateCamera(CameraUpdateFactory.newLatLng(sydney,8.0f));
+//<<<<<<< HEAD:DisasterMgmt/app/src/main/java/com/example/disastermanagement/VolunteerTrackingActivity.java
+//        databaseReference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                mMap.clear();
+//                System.out.println(dataSnapshot.getValue().toString());
+//                for(DataSnapshot users:dataSnapshot.getChildren()){
+//                    Register_Volunteer volunteer=users.getValue(Register_Volunteer.class);
+//                    mMap.clear();
+//                    LatLng a=new LatLng(Double.parseDouble(volunteer.getLat()),Double.parseDouble(volunteer.getLng()));
+//                    mMap.addMarker(new MarkerOptions().position(a).title(volunteer.getEmail()));
+//                    mMap.moveCamera(CameraUpdateFactory.newLatLng(a));
+//====
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(sydney, 8.0f));
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                mMap.clear();
                 System.out.println(dataSnapshot.getValue().toString());
                 for(DataSnapshot users:dataSnapshot.getChildren()){
                     Register_Volunteer volunteer=users.getValue(Register_Volunteer.class);
-                    mMap.clear();
-                    LatLng a=new LatLng(Double.parseDouble(volunteer.getLat()),Double.parseDouble(volunteer.getLng()));
+                    System.out.println(users.getValue().toString());
+                    LatLng a=new LatLng(Double.parseDouble(volunteer.lat),Double.parseDouble(volunteer.lng));
                     mMap.addMarker(new MarkerOptions().position(a).title(volunteer.getEmail()));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(a));
+                    //mMap.moveCamera(CameraUpdateFactory.newLatLng(a));
+
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 System.out.println(databaseError.getMessage());
+
             }
         });
     }

@@ -1,16 +1,21 @@
 package com.example.disastermanagement.Fragment;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -37,6 +43,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class ResourceFragment extends android.support.v4.app.Fragment {
 
     EditText name, loc, contact, amt, desc;
@@ -44,6 +52,8 @@ public class ResourceFragment extends android.support.v4.app.Fragment {
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
     Spinner spinner1;
+    SharedPreferences preferences;
+    private ProgressBar progressBar;
 
 
     @Nullable
@@ -78,6 +88,8 @@ public class ResourceFragment extends android.support.v4.app.Fragment {
         firebaseAuth=FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
         final FirebaseUser firebaseUser=firebaseAuth.getCurrentUser();
+        progressBar=view.findViewById(R.id.progressbar);
+        progressBar.setVisibility(View.INVISIBLE);
 
         subm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,10 +152,27 @@ public class ResourceFragment extends android.support.v4.app.Fragment {
 
                     SimpleDateFormat s = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
                     String format = s.format(new Date());
-                    Resource data=new Resource(amount,descr,itm,nm,lat,lon,ph,area,format);
-                    Toast.makeText(getContext(),data.toString(),Toast.LENGTH_LONG).show();
-                    Log.i("data",data.toString());
-                    databaseReference.child("Resources").child(firebaseUser.getUid()).push().setValue(data);
+                    if (isNetworkAvailable()) {
+                        Resource data = new Resource(amount, descr, itm, nm, lat, lon, ph, area, format);
+                        Toast.makeText(getContext(), data.toString(), Toast.LENGTH_LONG).show();
+                        Log.i("data", data.toString());
+                        databaseReference.child("Resources").child(firebaseUser.getUid()).push().setValue(data);
+                    }else{
+                        preferences=getContext().getSharedPreferences("GoogleInfo",MODE_PRIVATE);
+                        String id=preferences.getString("personID","");
+                        String msg="Resource:"+amount+":"+descr+":"+itm+":"+nm+":"+lat+":"+lon+":"+ph+":"+area+":"+format+":"+id;
+                        progressBar.setVisibility(View.VISIBLE);
+
+
+                        if( sendSMS("8082191919",msg)){
+                            progressBar.setVisibility(View.INVISIBLE);
+                            Toast.makeText(getContext(),"SMS sent",Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            progressBar.setVisibility(View.INVISIBLE);
+                            Toast.makeText(getContext(),"SMS NO",Toast.LENGTH_SHORT).show();
+                        }
+                    }
                     name.setText("");
                     contact.setText("");
                     amt.setText("");
@@ -159,6 +188,25 @@ public class ResourceFragment extends android.support.v4.app.Fragment {
         });
 
         return view;
+    }
+    private boolean sendSMS(String phoneNumber, String message) {
+        SmsManager sms = SmsManager.getDefault();
+        try {
+
+            sms.sendTextMessage(phoneNumber, null, message, null, null);
+            return true;
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
     public String get_city(double lat, double lng) {
         String add="";
