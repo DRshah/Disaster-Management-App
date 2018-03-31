@@ -25,14 +25,13 @@
 
 
     <Button
+
         style="@style/ButtonStyle"
-        android:background="@drawable/mybutton"
         android:textStyle="bold"
         android:id="@+id/callNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:text="CALL"
-        android:textColor="#C20A10" />
+        android:text="CALL"/>
 
 </LinearLayout>
