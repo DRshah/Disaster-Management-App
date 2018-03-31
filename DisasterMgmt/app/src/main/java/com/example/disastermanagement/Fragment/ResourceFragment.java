@@ -31,7 +31,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -135,8 +137,12 @@ public class ResourceFragment extends android.support.v4.app.Fragment {
                     lat = latitude + "";
                     lon = longitude + "";
 
-                    Resource data=new Resource(amount,descr,itm,nm,lat,lon,ph,area);
+
+                    SimpleDateFormat s = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+                    String format = s.format(new Date());
+                    Resource data=new Resource(amount,descr,itm,nm,lat,lon,ph,area,format);
                     Toast.makeText(getContext(),data.toString(),Toast.LENGTH_LONG).show();
+                    Log.i("data",data.toString());
                     databaseReference.child("Resources").child(firebaseUser.getUid()).push().setValue(data);
                     name.setText("");
                     contact.setText("");
