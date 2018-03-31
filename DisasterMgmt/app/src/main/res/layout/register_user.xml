@@ -1,28 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
+    android:padding="16dp"
     android:layout_height="match_parent">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="terms and conditions"/>
+
     <Button
+        style="@style/ButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#5d5ded"
+        android:background="@drawable/mybutton"
         android:text="Register as Volunteer"
+        android:layout_marginTop="60dp"
+
         android:id="@+id/but"/>
     <Button
+        style="@style/ButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#30e430"
-        android:text="Start Listening"
+        android:background="@drawable/mybutton"
+        android:layout_marginTop="50dp"
+        android:text="Start Location Tracking"
         android:enabled="false"
         android:id="@+id/but3"/>
     <Button
+        style="@style/ButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#e43045"
+        android:background="@drawable/mybutton"
+        android:layout_marginTop="50dp"
         android:text="Stop sensing location"
         android:id="@+id/but2"/>
+
+    <Button
+        style="@style/ButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/mybutton"
+        android:layout_marginTop="50dp"
+        android:text="Track location"
+        android:id="@+id/but4"/>
+
 </LinearLayout>

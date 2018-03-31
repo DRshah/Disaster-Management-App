@@ -76,22 +76,6 @@
             android:paddingBottom="5dp"
             android:textSize="16dp"/>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="20dp"
-            android:paddingTop="20dp"
-            android:paddingStart="20dp">
-            <TextView
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="LEARN MORE"
-                android:textSize="16dp"
-                android:fontFamily="sans-serif-medium"
-                android:textColor="#d0021b"/>
-        </LinearLayout>
     </LinearLayout>
 
 </android.support.v7.widget.CardView>

@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="horizontal">
 
 
 
@@ -13,10 +13,13 @@
         android:id="@+id/avatar"
         android:layout_width="70dp"
         android:layout_height="70dp"
+        android:background="@drawable/border"
 
         />
     <TextView
+        android:layout_gravity="center"
         android:id="@+id/name"
+        android:textAlignment="center"
         android:layout_width="wrap_content"
         android:textColor="@color/black"
         android:layout_height="wrap_content"

@@ -16,15 +16,16 @@ public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
     public void onTokenRefresh()
     {
         String token=FirebaseInstanceId.getInstance().getToken();
+        System.out.println(token);
         registerToken(token);
     }
     private void registerToken(String token)
     {
         //send token to database
 
-        Register_Token register_token = new Register_Token(token,FirebaseAuth.getInstance().getCurrentUser().getEmail().trim());
+        Register_Token register_token = new Register_Token(token);
 
-        FirebaseDatabase.getInstance().getReference("Token").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(register_token);
+        FirebaseDatabase.getInstance().getReference("Token").child(token).setValue(register_token);
         System.out.println("register_token method");
 
     }

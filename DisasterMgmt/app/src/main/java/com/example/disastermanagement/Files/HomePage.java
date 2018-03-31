@@ -99,7 +99,7 @@ public class HomePage extends AppCompatActivity {
         else{
             name=preferences.getString("Username","");
         }
-        Toast.makeText(this,name,Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this,name,Toast.LENGTH_SHORT).show();
 
         nav_text_view.setText(name);
 
@@ -150,6 +150,8 @@ public class HomePage extends AppCompatActivity {
     private void addDrawerItems() {
         mExpandableListAdapter = new CustomExpandableListAdapter(this, mExpandableListTitle, mExpandableListData);
         mExpandableListView.setAdapter(mExpandableListAdapter);
+        mExpandableListView.expandGroup(0);
+
         mExpandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int groupPosition) {
@@ -159,6 +161,7 @@ public class HomePage extends AppCompatActivity {
         mExpandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
             @Override
             public void onGroupCollapse(int groupPosition) {
+                mExpandableListView.expandGroup(0);
                 //getSupportActionBar().setTitle("hello world");
             }
         });
@@ -188,19 +191,19 @@ public class HomePage extends AppCompatActivity {
                 if(selectedItem.equalsIgnoreCase("Disaster Reporting"))
                 {
                     getSupportFragmentManager().beginTransaction().replace(R.id.container,new Entry()).commit();
-                    Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
                 }
                 else
                 if(selectedItem.equalsIgnoreCase("Volunteer"))
                 {
                     getSupportFragmentManager().beginTransaction().replace(R.id.container,new Volunteer()).commit();
-                    Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
                 }
                 else
                 if(selectedItem.equalsIgnoreCase("Emergency numbers"))
                 {
                     getSupportFragmentManager().beginTransaction().replace(R.id.container,new CallFragment()).commit();
-                    Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -217,15 +220,15 @@ public class HomePage extends AppCompatActivity {
                 if(selectedItem.equals("Feed"))
                 {
                     getSupportFragmentManager().beginTransaction().replace(R.id.container,new FeedFragment()).commit();
-                    Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
                 }
                 else
                 if(selectedItem.equals("Resource"))
                 {
                     getSupportFragmentManager().beginTransaction().replace(R.id.container,new ResourceFragment()).commit();
-                    Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(HomePage.this, "You have selected "+ selectedItem , Toast.LENGTH_SHORT).show();
                 }
-                Toast.makeText(HomePage.this, ""+selectedItem, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(HomePage.this, ""+selectedItem, Toast.LENGTH_SHORT).show();
                 mDrawerLayout.closeDrawer(GravityCompat.START);
                 return false;
             }

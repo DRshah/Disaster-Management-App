@@ -48,17 +48,23 @@
                 />
 
         </android.support.design.widget.TextInputLayout>
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/imageView"/>
+            android:id="@+id/imageView" />
 
         <Button
+            style="@style/ButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Select Image"
-            android:id="@+id/uploadimage"/>
+            android:drawableLeft="@drawable/ic_photo_size_select_actual_black_24dp"
+            android:id="@+id/uploadimage" />
+
         <Button
+            android:layout_marginTop="10dp"
+            style="@style/ButtonStyle"
             android:id="@+id/submit1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

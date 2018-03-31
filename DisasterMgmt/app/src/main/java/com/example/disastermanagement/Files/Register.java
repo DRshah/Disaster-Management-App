@@ -65,7 +65,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             }
         });
         System.out.println("2");
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+       mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         firebaseAuth=FirebaseAuth.getInstance();
         if(firebaseAuth.getCurrentUser()!=null)
@@ -77,12 +77,12 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         buttonRegitster=(Button)findViewById(R.id.buttonRegister);
         editTextEmail=(EditText)findViewById(R.id.editTextEmail);
         editTextPassword=(EditText)findViewById(R.id.editTextPassword);
-        textViewSignin=(TextView)findViewById(R.id.textViewSignin);
+        //textViewSignin=(TextView)findViewById(R.id.textViewSignin);
         progressDialog=new ProgressDialog(this);
 
 
         buttonRegitster.setOnClickListener(this);
-        textViewSignin.setOnClickListener(this);
+//        textViewSignin.setOnClickListener(this);
 
     }
     private void registerUser()

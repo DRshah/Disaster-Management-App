@@ -7,9 +7,9 @@ public class Register_Token {
     public Register_Token() {
     }
 
-    public Register_Token(String token, String email) {
+    public Register_Token(String token) {
         this.token = token;
-        this.email = email;
+
     }
 
     public String getToken() {

@@ -2,6 +2,7 @@ package com.example.disastermanagement.Fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -25,6 +27,7 @@ import java.util.List;
 public class CallFragment extends Fragment {
     List<Contacts> conList;
     ListView listView;
+    List<Integer> drawID=new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -37,7 +40,12 @@ public class CallFragment extends Fragment {
         conList.add(new Contacts("Ambulance", "8369818613"));
         conList.add(new Contacts("Police", "8369818613"));
         conList.add(new Contacts("Hospital", "8369818613"));
-        ContactAdapter adapter = new ContactAdapter(conList);
+
+        drawID.add(R.drawable.ic_airport_shuttle_black_24dp);
+        drawID.add(R.drawable.ic_local_car_wash_black_24dp);
+        drawID.add(R.drawable.ic_local_hospital_black_24dp);
+
+        ContactAdapter adapter = new ContactAdapter(conList,drawID);
         listView.setAdapter(adapter);
 
         return view;
@@ -46,9 +54,11 @@ public class CallFragment extends Fragment {
 
     class ContactAdapter extends ArrayAdapter<Contacts> {
         List<Contacts> contactslist;
-        public ContactAdapter(List<Contacts> contactlist) {
+        List<Integer> drawID;
+        public ContactAdapter(List<Contacts> contactlist,List<Integer> drawID) {
             super(getActivity(), R.layout.layout_emergency_single, contactlist);
             this.contactslist = contactlist;
+            this.drawID= drawID;
         }
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
@@ -56,6 +66,12 @@ public class CallFragment extends Fragment {
             View listViewItem = inflater.inflate(R.layout.layout_emergency_single, null, true);
             TextView serviceNAME = listViewItem.findViewById(R.id.serviceNAME);
             Button callNumber = listViewItem.findViewById(R.id.callNumber);
+            ImageView imageView= listViewItem.findViewById(R.id.icon);
+
+            Drawable drawable = getResources().getDrawable(drawID.get(position));
+
+            imageView.setImageDrawable(drawable);
+
             final Contacts econ = contactslist.get(position);
             serviceNAME.setText(econ.getServicename());
             final String number = econ.getContactinformation();

@@ -8,7 +8,7 @@
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_home_page">HomePage</string>
     <string-array name="product_group">
-        <item>Options</item>
+        <item>Menu</item>
 
         <!--<item>2. Exotic Vegetables</item>-->
         <!--<item>3. Fruits</item>-->

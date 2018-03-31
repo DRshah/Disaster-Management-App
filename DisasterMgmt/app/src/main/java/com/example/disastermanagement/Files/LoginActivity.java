@@ -1,16 +1,21 @@
 package com.example.disastermanagement.Files;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +35,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.squareup.picasso.Picasso;
 
 public class LoginActivity extends AppCompatActivity implements  View.OnClickListener{
     private Button buttonSignIn;
@@ -37,17 +45,28 @@ public class LoginActivity extends AppCompatActivity implements  View.OnClickLis
     private TextView textViewSignUp;
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
-
+    public final static int requestcall=1,requestcall1=0,requestcall2=2;
     private SignInButton googleButton;
     private final static int RC_SIGN_IN = 7;
     private GoogleApiClient mGoogleApiClient;
     SharedPreferences preferences;
+    private ImageView imageView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
+        FirebaseMessaging.getInstance().subscribeToTopic("test");
+        FirebaseInstanceId.getInstance().getToken();
+        if(ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.CALL_PHONE)!= PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(LoginActivity.this,new String[]{android.Manifest.permission.CALL_PHONE},requestcall);
+          //  ActivityCompat.requestPermissions(LoginActivity.this,new String[]{Manifest.permission.SEND_SMS},requestcall1);
+            //ActivityCompat.requestPermissions(LoginActivity.this,new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},requestcall2);
+        }
+        else{
+
+        }
         firebaseAuth= FirebaseAuth.getInstance();
         if(firebaseAuth.getCurrentUser()!=null)
         {
@@ -83,8 +102,8 @@ public class LoginActivity extends AppCompatActivity implements  View.OnClickLis
         editTextPassword=(EditText)findViewById(R.id.editTextPassword);
         textViewSignUp=(TextView)findViewById(R.id.textViewSignUp);
         progressDialog=new ProgressDialog(this);
-        ;
-
+        imageView=(ImageView) findViewById(R.id.symbol);
+        Picasso.with(this).load(R.drawable.respite).into(imageView);
         buttonSignIn.setOnClickListener(this);
         textViewSignUp.setOnClickListener(this);
     }
@@ -104,15 +123,15 @@ public class LoginActivity extends AppCompatActivity implements  View.OnClickLis
                 String personName = account.getDisplayName();
                 preferences.edit().putString("name",personName).apply();
                 preferences.edit().putString("photo",personPhoto+"").apply();
-                Toast.makeText(getApplicationContext(), "hello",
-                        Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "hello",
+                  //      Toast.LENGTH_SHORT).show();
 
                 firebaseAuthWithGoogle(account);
 
             } else {
                 // Google Sign In failed, update UI appropriately
                 // ...
-                Toast.makeText(getApplicationContext(),"firebase google login failed",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"firebase google login failed",Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -130,16 +149,16 @@ public class LoginActivity extends AppCompatActivity implements  View.OnClickLis
                             // Sign in success, update UI with the signed-in user's information
                             //Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = firebaseAuth.getCurrentUser();
-                            Toast.makeText(getApplicationContext(), "Authentication successful--"+user,
-                                    Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getApplicationContext(), "Authentication successful--"+user,
+//                                    Toast.LENGTH_SHORT).show();
 
                             startActivity(new Intent(getApplicationContext(),HomePage.class));
                             //updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             //Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(getApplicationContext(), "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getApplicationContext(), "Authentication failed.",
+//                                    Toast.LENGTH_SHORT).show();
                             //updateUI(null);
                         }
 
@@ -206,5 +225,52 @@ public class LoginActivity extends AppCompatActivity implements  View.OnClickLis
             startActivity(new Intent(this,Register.class));
         }
     }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode,permissions,grantResults);
+        if(requestCode==requestcall)
+        {
+            if(grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED)
+            {
+                Toast.makeText(this,"permission granted",Toast.LENGTH_SHORT).show();
+            }
+
+            else
+            {
+                Toast.makeText(this,"permission denied",Toast.LENGTH_SHORT).show();
+            }
+
+        }
+//        else if(requestCode==requestcall1){
+//            if(grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED)
+//            {
+//                Toast.makeText(this,"permission granted",Toast.LENGTH_SHORT).show();
+//            }
+//
+//            else
+//            {
+//                Toast.makeText(this,"permission denied",Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//        else if(requestCode==requestcall2){
+//            if(grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED)
+//            {
+//                Toast.makeText(this,"permission granted",Toast.LENGTH_SHORT).show();
+//            }
+//
+//            else
+//            {
+//                Toast.makeText(this,"permission denied",Toast.LENGTH_SHORT).show();
+//            }
+//        }
+        else {
+
+        }
+
+    }
+
 }
 
