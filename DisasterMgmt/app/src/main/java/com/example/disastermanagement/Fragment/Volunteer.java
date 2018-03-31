@@ -66,7 +66,7 @@ public class Volunteer extends android.support.v4.app.Fragment{
                 for(DataSnapshot usersnapshot: dataSnapshot.getChildren())
                 {
                     Register_Volunteer obj=usersnapshot.getValue(Register_Volunteer.class);
-                    if(FirebaseAuth.getInstance().getCurrentUser().getEmail().trim().equals(obj.email.trim()))
+                    if(FirebaseAuth.getInstance().getCurrentUser().getEmail().toString().trim().equals(obj.email.trim()))
                     {
                         uid=usersnapshot.getKey();
                         data_email=obj.email.trim();
@@ -80,6 +80,7 @@ public class Volunteer extends android.support.v4.app.Fragment{
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                System.out.println(databaseError.getMessage());
             }
         });
         but2.setOnClickListener(new View.OnClickListener() {

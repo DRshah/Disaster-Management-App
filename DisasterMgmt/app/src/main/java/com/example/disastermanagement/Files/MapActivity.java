@@ -41,7 +41,7 @@ import java.util.Timer;
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 public class MapActivity extends SupportMapFragment implements OnMapReadyCallback {
     private GoogleMap mMap;
-    private TrackGPS gps=new TrackGPS(getContext());
+    private TrackGPS gps=new TrackGPS(getActivity());
     public Context context;
     private PopupWindow mPopupWindow;
     Toolbar toolbar;

@@ -31,25 +31,7 @@ public class VolunteerTrackingActivity extends FragmentActivity implements OnMap
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         databaseReference= FirebaseDatabase.getInstance().getReference("Volunteer");
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                mMap.clear();
-                System.out.println(dataSnapshot.getValue().toString());
-                for(DataSnapshot users:dataSnapshot.getChildren()){
-                    Register_Volunteer volunteer=users.getValue(Register_Volunteer.class);
-                    System.out.println(users.getValue().toString());
-                    LatLng a=new LatLng(Double.parseDouble(volunteer.lat),Double.parseDouble(volunteer.lng));
-                    mMap.addMarker(new MarkerOptions().position(a).title(volunteer.getEmail()));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(a));
-                }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
     }
 
 
@@ -66,9 +48,31 @@ public class VolunteerTrackingActivity extends FragmentActivity implements OnMap
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+//hello
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(17, 78);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(sydney, 8.0f));
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mMap.clear();
+                System.out.println(dataSnapshot.getValue().toString());
+                for(DataSnapshot users:dataSnapshot.getChildren()){
+                    Register_Volunteer volunteer=users.getValue(Register_Volunteer.class);
+                    System.out.println(users.getValue().toString());
+                    LatLng a=new LatLng(Double.parseDouble(volunteer.lat),Double.parseDouble(volunteer.lng));
+                    mMap.addMarker(new MarkerOptions().position(a).title(volunteer.getEmail()));
+                    //mMap.moveCamera(CameraUpdateFactory.newLatLng(a));
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }
