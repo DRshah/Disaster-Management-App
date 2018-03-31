@@ -6,6 +6,7 @@
     tools:context="com.example.disastermanagement.Fragment.FeedFragment">
 
     <android.support.v7.widget.RecyclerView
+        style="@style/AppTheme"
         android:id="@+id/card_recycler_view"
         android:scrollbars="vertical"
         android:layout_width="match_parent"

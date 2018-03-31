@@ -59,14 +59,22 @@ public class LoginActivity extends AppCompatActivity implements  View.OnClickLis
         setContentView(R.layout.login_activity);
         FirebaseMessaging.getInstance().subscribeToTopic("test");
         FirebaseInstanceId.getInstance().getToken();
-        if(ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.CALL_PHONE)!= PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(LoginActivity.this,new String[]{android.Manifest.permission.CALL_PHONE},requestcall);
-          //  ActivityCompat.requestPermissions(LoginActivity.this,new String[]{Manifest.permission.SEND_SMS},requestcall1);
-            //ActivityCompat.requestPermissions(LoginActivity.this,new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},requestcall2);
-        }
-        else{
 
+
+        int reqcode=0;
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(LoginActivity.this , new String[]{Manifest.permission.ACCESS_FINE_LOCATION},reqcode);
         }
+        int reqcode1=0;
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(LoginActivity.this , new String[]{Manifest.permission.CALL_PHONE},reqcode1);
+        }
+        int reqcode2=0;
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(LoginActivity.this, new String[]{Manifest.permission.SEND_SMS},reqcode2);
+        }
+
+
         firebaseAuth= FirebaseAuth.getInstance();
         if(firebaseAuth.getCurrentUser()!=null)
         {

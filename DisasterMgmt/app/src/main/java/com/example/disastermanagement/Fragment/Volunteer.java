@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.example.disastermanagement.Files.GPSTracker;
 import com.example.disastermanagement.Files.Register_Volunteer;
 import com.example.disastermanagement.R;
+import com.example.disastermanagement.VolunteerTrackingActivity;
 import com.google.android.gms.maps.LocationSource;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -32,7 +33,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import java.util.HashMap;
 import java.util.Map;
 public class Volunteer extends android.support.v4.app.Fragment{
-    private Button but,but2,but3;
+    private Button but,but2,but3,but4;
     private FirebaseAuth mauth;
     private FirebaseStorage mstorage;
     private String email,num;
@@ -52,6 +53,7 @@ public class Volunteer extends android.support.v4.app.Fragment{
         but=(Button)view.findViewById(R.id.but);
         but2=(Button)view.findViewById(R.id.but2);
         but3=(Button)view.findViewById(R.id.but3);
+        but4=(Button)view.findViewById(R.id.but4);
         databaseReference=FirebaseDatabase.getInstance().getReference();
         FirebaseDatabase.getInstance().getReference("Volunteer").addValueEventListener(new ValueEventListener() {
             @Override
@@ -59,13 +61,14 @@ public class Volunteer extends android.support.v4.app.Fragment{
                 for(DataSnapshot usersnapshot: dataSnapshot.getChildren())
                 {
                     Register_Volunteer obj=usersnapshot.getValue(Register_Volunteer.class);
-                    if(FirebaseAuth.getInstance().getCurrentUser().getEmail().trim().equals(obj.email.trim()))
+                    if(FirebaseAuth.getInstance().getCurrentUser().getEmail().toString().trim().equals(obj.email.trim()))
                     {
                         uid=usersnapshot.getKey();
                         data_email=obj.email.trim();
                         data_phone=obj.num.trim();
                         data_lat=obj.lat.trim();
                         data_long=obj.lng.trim();
+                        Toast.makeText(getContext(),"Ready to listen",Toast.LENGTH_LONG).show();
                         but3.setEnabled(true);
                         break;
                     }
@@ -120,6 +123,13 @@ public class Volunteer extends android.support.v4.app.Fragment{
                 locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
                 //noinspection MissingPermission
                 locationManager.requestLocationUpdates("gps",3000,0,listener);
+            }
+        });
+        but4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getContext(), VolunteerTrackingActivity.class);
+                startActivity(intent);
             }
         });
         email=FirebaseAuth.getInstance().getCurrentUser().getEmail();

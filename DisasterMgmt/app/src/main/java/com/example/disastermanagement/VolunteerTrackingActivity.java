@@ -30,23 +30,7 @@ public class VolunteerTrackingActivity extends FragmentActivity implements OnMap
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         databaseReference= FirebaseDatabase.getInstance().getReference("Volunteer");
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot users:dataSnapshot.getChildren()){
-                    Register_Volunteer volunteer=users.getValue(Register_Volunteer.class);
-                    mMap.clear();
-                    LatLng a=new LatLng(Double.parseDouble(volunteer.getLat()),Double.parseDouble(volunteer.getLng()));
-                    mMap.addMarker(new MarkerOptions().position(a).title(volunteer.getEmail()));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(a));
-                }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
     }
 
 
@@ -67,5 +51,23 @@ public class VolunteerTrackingActivity extends FragmentActivity implements OnMap
         LatLng sydney = new LatLng(17, 78);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                System.out.println(dataSnapshot.getValue().toString());
+                for(DataSnapshot users:dataSnapshot.getChildren()){
+                    Register_Volunteer volunteer=users.getValue(Register_Volunteer.class);
+                    mMap.clear();
+                    LatLng a=new LatLng(Double.parseDouble(volunteer.getLat()),Double.parseDouble(volunteer.getLng()));
+                    mMap.addMarker(new MarkerOptions().position(a).title(volunteer.getEmail()));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(a));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println(databaseError.getMessage());
+            }
+        });
     }
 }

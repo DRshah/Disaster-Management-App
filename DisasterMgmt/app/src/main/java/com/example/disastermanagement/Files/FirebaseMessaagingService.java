@@ -40,8 +40,8 @@ public class FirebaseMessaagingService extends FirebaseMessagingService {
 
         NotificationCompat.Builder builder=new NotificationCompat.Builder(this)
                 .setAutoCancel(true)
-                .setContentTitle("FCM TEST")
-                .setContentText(remoteMessage.getData().get("messsage"))
+                .setContentTitle("Alert!")
+                .setContentText(remoteMessage.getData().get("msg").toString().trim())
                 .setSmallIcon(R.drawable.ic_menu_camera)
                 .setContentIntent(pendingIntent);
         NotificationManager manager=(NotificationManager)getSystemService(NOTIFICATION_SERVICE);
