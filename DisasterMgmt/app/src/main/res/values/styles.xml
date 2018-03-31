@@ -33,13 +33,12 @@
         <item name="android:padding">05dp</item>
     </style>
 
-<<<<<<< HEAD
     <style name="MyTheme" parent="AppTheme" />
-=======
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
->>>>>>> 451b2871d54e713d2c0c342339594914b61c4d3b
+
 
 </resources>

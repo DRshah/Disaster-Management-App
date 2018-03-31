@@ -56,6 +56,9 @@
             </intent-filter>
         </service>
 
+        <activity
+            android:name=".VolunteerTrackingActivity"
+            android:label="@string/title_activity_volunteer_tracking"></activity>
     </application>
 
 </manifest>
