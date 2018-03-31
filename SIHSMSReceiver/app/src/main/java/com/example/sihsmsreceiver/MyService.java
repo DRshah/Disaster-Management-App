@@ -73,14 +73,24 @@ public class MyService extends Service {
                     for (int k=0;k<x.length;k++) {
                         System.out.println(x[k]);
                     }
-                    String datetime=get_timestamp();
-                    String area=get_city(Double.parseDouble(x[2]),Double.parseDouble(x[3]));
-                    Feed feed=new Feed(x[0],x[1],x[2],x[3],datetime,area,x[4]);
-                    System.out.println("hello");
-                    System.out.println(feed.toString());
-                    Toast.makeText(getApplicationContext(),strMessage,Toast.LENGTH_SHORT).show();
-                    Log.i(TAG, strMessage);
-                    sendToFirebase(feed);
+                    System.out.println("yo");
+                    if (x.length>9&&x[0].equals("Resource")){
+
+                        Resource r=new Resource(x[1],x[2],x[3],x[4],x[5],x[6],x[7],x[8],x[9]+":"+x[10]+":"+x[11]);
+                        sendResToFirebase(r,x[12]);
+                        System.out.println(r.toString());
+
+                    }
+                    else if (x.length==6&&x[0].equals("Disaster")) {
+                        String datetime = get_timestamp();
+                        String area = get_city(Double.parseDouble(x[3]), Double.parseDouble(x[4]));
+                        Feed feed = new Feed(x[1], x[2], x[3], x[4], datetime, area, x[5]);
+                        System.out.println("hello");
+                        System.out.println(feed.toString());
+                        Toast.makeText(getApplicationContext(), strMessage, Toast.LENGTH_SHORT).show();
+                        Log.i(TAG, strMessage);
+                        sendToFirebase(feed);
+                    }
                     //databaseReference.child("Data").child(x[4]).push().setValue(feed);
                 }
 
@@ -89,6 +99,9 @@ public class MyService extends Service {
         }
         void sendToFirebase(Feed feed){
             databaseReference.child("Data").child(feed.getUid()).push().setValue(feed);
+        }
+        void sendResToFirebase(Resource resource,String id){
+            databaseReference.child("Resources").child(id).push().setValue(resource);
         }
         public String get_timestamp()
         { //Long tsLong = System.currentTimeMillis()/1000;

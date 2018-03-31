@@ -1,13 +1,13 @@
 package com.example.sihsmsreceiver;
 
 public class Feed {
-    String category, description, latitude,longitude,time,area,uid;
+    String category, description, lat,lon,time,area,uid;
 
     public Feed(String category, String description, String latitude, String longitude, String time, String area, String uid) {
         this.category = category;
         this.description = description;
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.lat = latitude;
+        this.lon = longitude;
         this.time = time;
         this.area = area;
         this.uid = uid;
@@ -30,11 +30,11 @@ public class Feed {
     }
 
     public String getLatitude() {
-        return latitude;
+        return lat;
     }
 
     public String getLongitude() {
-        return longitude;
+        return lon;
     }
 
     public String getTime() {
@@ -43,6 +43,6 @@ public class Feed {
 
     @Override
     public String toString() {
-        return category+" "+description+" "+latitude+" "+longitude+" "+time+" "+uid+" "+area;
+        return category+" "+description+" "+lat+" "+lon+" "+time+" "+uid+" "+area;
     }
 }
