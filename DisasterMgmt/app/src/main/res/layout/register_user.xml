@@ -38,6 +38,7 @@
         android:background="@drawable/mybutton"
         android:layout_marginTop="50dp"
         android:text="Track location"
+
         android:id="@+id/but4"/>
 
 </LinearLayout>

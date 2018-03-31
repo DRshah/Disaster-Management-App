@@ -58,7 +58,7 @@
         </service>
 
         <activity
-            android:name=".VolunteerTrackingActivity"
+            android:name=".Fragment.VolunteerTrackingActivity"
             android:label="@string/title_activity_volunteer_tracking"></activity>
     </application>
 

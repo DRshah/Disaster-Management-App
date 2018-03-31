@@ -254,7 +254,7 @@ public class Entry extends android.support.v4.app.Fragment {
 
                     preferences=getContext().getSharedPreferences("GoogleInfo",MODE_PRIVATE);
                     String id=preferences.getString("personID","");
-                    String msg=category+":"+descrip+":"+latitude+":"+longitude+":"+id;
+                    String msg="Disaster"+category+":"+descrip+":"+latitude+":"+longitude+":"+id;
                     progressdialog.setMessage("Sending sms.....");
 
                     progressdialog.show();

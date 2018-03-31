@@ -32,7 +32,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import java.util.HashMap;
 import java.util.Map;
 public class Volunteer extends android.support.v4.app.Fragment{
-    private Button but,but2,but3;
+    private Button but,but2,but3,but4;
     private FirebaseAuth mauth;
     private FirebaseStorage mstorage;
     private String email,num;
@@ -52,6 +52,13 @@ public class Volunteer extends android.support.v4.app.Fragment{
         but=(Button)view.findViewById(R.id.but);
         but2=(Button)view.findViewById(R.id.but2);
         but3=(Button)view.findViewById(R.id.but3);
+        but4=view.findViewById(R.id.but4);
+        but4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(),VolunteerTrackingActivity.class));
+            }
+        });
         databaseReference=FirebaseDatabase.getInstance().getReference();
         FirebaseDatabase.getInstance().getReference("Volunteer").addValueEventListener(new ValueEventListener() {
             @Override
@@ -132,6 +139,10 @@ public class Volunteer extends android.support.v4.app.Fragment{
             }
         });
         return view;
+    }
+    public void onTrack(View view){
+        Intent intent=new Intent(getContext(),VolunteerTrackingActivity.class);
+        startActivity(intent);
     }
     public void showChangeLangDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
