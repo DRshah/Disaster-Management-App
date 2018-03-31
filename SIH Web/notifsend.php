@@ -1,16 +1,10 @@
 <?php
 $tokensx = $_POST['tokens'];
 $msgx = $_POST['notif'];
-if(strpos($tokensx,"///"))
-{
-  $tokens[]=explode("///",$tokensx);
-}
-else
-{
-  $tokens = array($tokensx) ;
-}
-
-
+//echo $tokensx;
+// if(strpos($tokensx,"///"))
+// {
+  $tokens=explode("///",$tokensx);
 
 function send_notification($tokens,$message)
 {
@@ -39,13 +33,14 @@ function send_notification($tokens,$message)
     }
     curl_close($ch);
 
+echo json_encode($fields);
     return $result;
 
 }
 
-  echo "<script>console.log( 'Debug Objects: " . $tokens[0] . "' );</script>";
+//  echo "<script>console.log( 'Debug Objects: " . $tokens[0] . "' );</script>";
 
-   $message=array("message" => $msgx);
+   $message=array("msg" => $msgx);
    $message_status=send_notification($tokens,$message);
    echo $message_status;
 

@@ -57,7 +57,7 @@
       var lat = new Array();
       var lon = new Array();
       var numb = new Array();
-      var countr = 1;
+      var countr = 0;
 
       function gotData(data){
         console.log("hello");
@@ -68,28 +68,16 @@
             lon.push(users[x].lng);
             names.push(users[x].email);
             numb.push(users[x].num);
+            countr++;
       //    }
         }
         console.log(lat);
         console.log(lon);
-        if(countr==1)
-        {
         heatadd(lat,lon,names,numb);
-        countr++;
-        }
-        else {
-          deleteMarkers();
-          heatadd(lat,lon,names,numb);
-        }
       }
       function errData(err) {
         // body...
         console.log(err);
-      }
-
-      function deleteMarkers() {
-        clearMarkers();
-        markers = [];
       }
 
 
@@ -98,7 +86,7 @@
 
               var map = new google.maps.Map(document.getElementById('map'), {
                 center: new google.maps.LatLng(17.203327, 76.7372299),
-                zoom: 12
+                zoom: 7
               });
 
             for( var xy = 0 ; xy < countr ; xy++ )

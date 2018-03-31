@@ -61,7 +61,11 @@ tr:nth-child(even) {
       var token = new Array();
 
         function gotData(data){
+
         var users=data.val();
+
+        console.log(users);
+
               for(x in users){
                   token.push(users[x].token);
                   if(cnt==1)
@@ -75,11 +79,9 @@ tr:nth-child(even) {
                   }
 
             }
-
             console.log(appendr);
             var btn = document.getElementById("btnsubmit");
             btn.disabled=false;
-
 
         }
             function errData(err) {

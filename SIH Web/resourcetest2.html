@@ -52,7 +52,7 @@
   </head>
 
   <body>
-
+<div id="chart_div2" style="width: 950px; height: 450px;"></div>
 <div id="chart_div" style="width: 900px; height: 500px;"></div>
 <div id="piechart" style="width: 900px; height: 500px;"></div>
 
@@ -60,6 +60,7 @@
      <table name="disasterdisplay" id="table" border=1 cellpadding=5px></table>
    </div>
   	<script type="text/javascript">
+
       var database=firebase.database();
       var ref=database.ref("Resources");
       ref.on("value",gotData,errData);
@@ -70,7 +71,9 @@
       var item = new Array();
       var descr = new Array();
       var areas = new Array();
+      var datax;
       var uniquearea = new Array();
+      var dateTime = new Array();
       var countr = 0;
       var dis = 1 ;
 
@@ -86,6 +89,13 @@
                   item.push(users[x][y].item);
                   descr.push(users[x][y].description);
                   areas.push(users[x][y].area);
+                  var dt = (users[x][y].datetime).split(" ");
+                  var ind = dt[0].split("-");
+                  var month = ind[1];
+                  var day = ind[0];
+                  var yr = ind[2];
+                  var newdate = getDate(month,day,yr);
+                  dateTime.push(newdate);
                   countr++;
                 }
             }
@@ -98,13 +108,54 @@
               document.location.reload();
             }
             drawchart2(item,amt,areas,uniquearea);
-            drawchart(item);
+            drawchart(item,amt,dateTime);
+            drawChart3(item,amt,dateTime);
         }
 
             function errData(err) {
         			// body...
         			console.log(err);
         		}
+
+            function drawChart3(item,amt,dateTime) {
+
+              google.charts.load('current', {'packages':['annotatedtimeline']});
+              google.charts.setOnLoadCallback(drawVisualization);
+              function drawVisualization(){
+        datax = new google.visualization.DataTable();
+        datax.addColumn('date', 'Date');
+        datax.addColumn('number', 'Food');
+        datax.addColumn('number', 'Water');
+        datax.addColumn('number', 'Rescue team');
+        datax.addColumn('number', 'Blankets');
+        datax.addColumn('number', 'First Aid');
+        datax.addColumn('number', 'Battery and torch lights');
+
+        for( var xx = 0 ; xx < item.length ; xx++ )
+        {
+          var d = new Date(dateTime[xx]);
+          var pp = Number(amt[xx]);
+          if(item[xx]=="Food")
+            datax.addRow([d,pp,0,0,0,0,0]);
+          else if(item[xx]=="Water")
+            datax.addRow([d,0,pp,0,0,0,0]);
+          else if(item[xx]=="Rescue team")
+            datax.addRow([d,0,0,pp,0,0,0]);
+          else if(item[xx]=="Blankets")
+            datax.addRow([d,0,0,0,pp,0,0]);
+          else if(item[xx]=="First Aid")
+            datax.addRow([d,0,0,0,0,pp,0]);
+          else if(item[xx]=="Battery and torch lights")
+            datax.addRow([d,0,0,0,0,0,pp]);
+
+        }
+
+        var chart = new google.visualization.AnnotatedTimeLine(document.getElementById('chart_div2'));
+        chart.draw(datax, {displayAnnotations: true});
+      }
+
+
+      }
 
             function drawchart2(item,amt,areas,uniquearea)
             {
@@ -122,22 +173,21 @@
                     if(areas[pqrs]==uniquearea[pqr])
                     {
                       if(item[pqrs]=="Food")
-                        cntfood++;
+                        cntfood=cntfood+Number(amt[pqrs]);
                       else if(item[pqrs]=="Water")
-                        cntwater++;
+                        cntwater=cntwater+Number(amt[pqrs]);
                      else if(item[pqrs]=="Rescue team")
-                        rt++;
+                        rt=rt+Number(amt[pqrs]);
                      else if(item[pqrs]=="Blankets")
-                        bk++;
+                        bk=bk+Number(amt[pqrs]);
                      else if(item[pqrs]=="First Aid")
-                        fa++;
+                        fa=fa+Number(amt[pqrs]);
                      else if(item[pqrs]=="Battery and torch lights")
-                        btl++;
+                        btl=btl+Number(amt[pqrs]);
                     }
                   }
                   dataxy.push([strr,cntfood,cntwater,rt,bk,fa,btl]);
                 }
-                console.log(dataxy);
                 var datas = google.visualization.arrayToDataTable(dataxy);
             var options = {
               title : 'Number of Resources per Area',
@@ -149,6 +199,14 @@
             var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
             chart.draw(datas, options);
           }
+          }
+
+          function getDate(month,day,yr)
+          {
+              var mn = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+              var finmn = mn[month-1];
+              var str = finmn+" "+day+","+yr ;
+              return str;
           }
 
           function drawchart(categ)
@@ -168,8 +226,6 @@
                 }
               }
             }
-            console.log(catnew);
-            console.log(countt);
             function drawChart() {
               var data = google.visualization.arrayToDataTable([
                 ['Resources', 'Amount required'],
@@ -193,8 +249,7 @@
 
         function disptable(names,loc,phn,amt,item,descr,areas)
         {
-        console.log(names);
-        console.log(loc);
+
         var table = document.getElementById('table');
         var tbody = document.createElement('tbody');
             var rowhead = document.createElement('tr');
